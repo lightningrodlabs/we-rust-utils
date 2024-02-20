@@ -1,6 +1,10 @@
 {
   "name": "@lightningrodlabs/we-rust-utils-linux-x64-gnu",
   "version": "0.1.2",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lightningrodlabs/we-rust-utils"
+  },
   "os": [
     "linux"
   ],
