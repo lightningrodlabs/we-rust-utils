@@ -1,0 +1,18 @@
+{
+  "name": "@lightningrodlabs/we-rust-utils-darwin-arm64",
+  "version": "0.0.0",
+  "os": [
+    "darwin"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "main": "we-rust-utils.darwin-arm64.node",
+  "files": [
+    "we-rust-utils.darwin-arm64.node"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">= 10"
+  }
+}
