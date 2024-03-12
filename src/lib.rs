@@ -6,5 +6,4 @@ pub mod decode_webapp;
 pub mod types;
 mod utils;
 pub mod we_rust_handler;
-pub mod websockets;
 pub mod zome_call_signer;
