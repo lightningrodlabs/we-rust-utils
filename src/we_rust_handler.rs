@@ -1,26 +1,20 @@
 #![deny(clippy::all)]
 
-use holochain_client::AdminWebsocket;
 use holochain_types::prelude::{Signature, ZomeCallUnsigned};
-use lair_keystore_api::{dependencies::url::Url, ipc_keystore::ipc_keystore_connect, LairClient};
+use lair_keystore_api::{dependencies::{sodoken::BufRead, url::Url}, ipc_keystore::ipc_keystore_connect, LairClient};
 use napi::Result;
-use sodoken::BufRead;
 use std::ops::Deref;
 
 use crate::types::*;
 
 struct WeRustHandler {
     lair_client: LairClient,
-    admin_ws: AdminWebsocket,
-    app_port: u64,
 }
 
 impl WeRustHandler {
     /// Connect to lair keystore
     pub async fn new(
         keystore_url: String,
-        admin_port: u64,
-        app_port: u64,
         passphrase: String,
     ) -> Self {
         let connection_url_parsed = Url::parse(keystore_url.deref()).unwrap();
@@ -31,14 +25,8 @@ impl WeRustHandler {
             .await
             .unwrap();
 
-        let admin_ws = AdminWebsocket::connect(format!("ws://127.0.0.1:{}", admin_port))
-            .await
-            .unwrap();
-
         Self {
             lair_client,
-            admin_ws,
-            app_port,
         }
     }
 
@@ -95,12 +83,10 @@ impl JsWeRustHandler {
     #[napi]
     pub async fn connect(
         keystore_url: String,
-        admin_port: i32,
-        app_port: i32,
         passphrase: String,
     ) -> Self {
         let we_rust_handler =
-            WeRustHandler::new(keystore_url, admin_port as u64, app_port as u64, passphrase).await;
+            WeRustHandler::new(keystore_url, passphrase).await;
 
         JsWeRustHandler {
             we_rust_handler: Some(we_rust_handler),

@@ -31,7 +31,7 @@ export interface ZomeCallNapi {
 export type JsWeRustHandler = WeRustHandler
 export class WeRustHandler {
   constructor()
-  static connect(keystoreUrl: string, adminPort: number, appPort: number, passphrase: string): Promise<WeRustHandler>
+  static connect(keystoreUrl: string, passphrase: string): Promise<WeRustHandler>
   signZomeCall(zomeCallUnsignedJs: ZomeCallUnsignedNapi): Promise<ZomeCallNapi>
 }
 export type JsZomeCallSigner = ZomeCallSigner

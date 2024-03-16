@@ -1,14 +1,11 @@
 #![deny(clippy::all)]
 
 use holochain_conductor_api::{
-    conductor::{ConductorConfig, KeystoreConfig},
+    conductor::{paths::DataRootPath, ConductorConfig, KeystoreConfig},
     AdminInterfaceConfig, InterfaceDriver,
 };
-use holochain_p2p::kitsune_p2p::{
-    dependencies::kitsune_p2p_types::config::tuning_params_struct::KitsuneP2pTuningParams,
-    KitsuneP2pConfig, TransportConfig,
-};
-use std::path::Path;
+use holochain_p2p::kitsune_p2p::dependencies::kitsune_p2p_types::config::{tuning_params_struct::KitsuneP2pTuningParams, KitsuneP2pConfig, TransportConfig};
+use std::path::PathBuf;
 
 #[napi]
 pub fn default_conductor_config(
@@ -30,7 +27,7 @@ pub fn default_conductor_config(
     });
 
     let config = ConductorConfig {
-        environment_path: Path::new(&conductor_environment_path).into(),
+        data_root_path: Some(DataRootPath::from(PathBuf::from(conductor_environment_path))),
         dpki: None,
         keystore: KeystoreConfig::LairServer {
             connection_url: url2::url2!("{}", keystore_connection_url),
@@ -38,10 +35,10 @@ pub fn default_conductor_config(
         admin_interfaces: Some(vec![AdminInterfaceConfig {
             driver: InterfaceDriver::Websocket { port: admin_port },
         }]),
-        network: Some(network_config),
+        network: network_config,
         db_sync_strategy: Default::default(),
         tracing_override: None,
-        tracing_scope: None,
+        tuning_params: None,
     };
 
     serde_yaml::to_string(&config).expect("Failed to convert conductor config to yaml string.")
