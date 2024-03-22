@@ -5,7 +5,8 @@ use holochain_conductor_api::{
     AdminInterfaceConfig, InterfaceDriver,
 };
 use holochain_p2p::kitsune_p2p::dependencies::kitsune_p2p_types::config::{tuning_params_struct::KitsuneP2pTuningParams, KitsuneP2pConfig, TransportConfig};
-use std::path::PathBuf;
+use holochain_types::websocket::AllowedOrigins;
+use std::{collections::HashSet, path::PathBuf};
 
 #[napi]
 pub fn default_conductor_config(
