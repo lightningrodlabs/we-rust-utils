@@ -31,9 +31,7 @@ jobs:
               yarn build
               strip -x *.node
           - host: windows-latest
-            build: |
-              $env:SODIUM_LIB_DIR="$(pwd)\vcpkg\packages\libsodium_x64-windows-release\lib"
-              yarn build
+            build: SODIUM_LIB_DIR="$(pwd)/vcpkg/packages/libsodium_x64-windows-release/lib" yarn build
             target: x86_64-pc-windows-msvc
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
