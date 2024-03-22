@@ -14,6 +14,7 @@ pub fn default_conductor_config(
     keystore_connection_url: String,
     bootstrap_server_url: String,
     signaling_server_url: String,
+    allowed_origin: String,
 ) -> String {
     let mut network_config = KitsuneP2pConfig::default();
     network_config.bootstrap_service = Some(url2::url2!("{}", bootstrap_server_url));
@@ -26,6 +27,9 @@ pub fn default_conductor_config(
         signal_url: signaling_server_url,
     });
 
+    let mut allowed_origins_map = HashSet::new();
+    allowed_origins_map.insert(allowed_origin);
+
     let config = ConductorConfig {
         data_root_path: Some(DataRootPath::from(PathBuf::from(conductor_environment_path))),
         dpki: None,
@@ -33,7 +37,7 @@ pub fn default_conductor_config(
             connection_url: url2::url2!("{}", keystore_connection_url),
         },
         admin_interfaces: Some(vec![AdminInterfaceConfig {
-            driver: InterfaceDriver::Websocket { port: admin_port },
+            driver: InterfaceDriver::Websocket { port: admin_port, allowed_origins: AllowedOrigins::Origins(allowed_origins_map) },
         }]),
         network: network_config,
         db_sync_strategy: Default::default(),

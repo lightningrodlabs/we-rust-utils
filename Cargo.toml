@@ -16,10 +16,10 @@ napi = { version = "2.12.2", default-features = false, features = [
 ] }
 napi-derive = "2.12.2"
 
-holochain_client = "0.5.0-dev.30"
-holochain_conductor_api = "0.3.0-beta-dev.39"
-holochain_p2p = "0.3.0-beta-dev.38"
-holochain_types = "0.3.0-beta-dev.36"
+holochain_client = { git = "https://github.com/matthme/holochain-client-rust", branch = "0.3.0-1ddfd2d" }
+holochain_conductor_api =  { git = "https://github.com/holochain/holochain", rev = "1ddfd2d19c810305ed4d8b9b117c23e338700efe" }
+holochain_p2p =   { git = "https://github.com/holochain/holochain", rev = "1ddfd2d19c810305ed4d8b9b117c23e338700efe" }
+holochain_types =   { git = "https://github.com/holochain/holochain", rev = "1ddfd2d19c810305ed4d8b9b117c23e338700efe" }
 lair_keystore_api = "0.4.4"
 
 futures = "0.3"
