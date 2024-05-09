@@ -1,7 +1,7 @@
 [package]
 edition = "2021"
 name = "lightningrodlabs_we-rust-utils"
-version = "0.300.0"
+version = "0.400.0-dev.0"
 
 [lib]
 crate-type = ["cdylib"]
@@ -16,9 +16,9 @@ napi = { version = "2.12.2", default-features = false, features = [
 ] }
 napi-derive = "2.12.2"
 
-holochain_conductor_api =  { git = "https://github.com/holochain/holochain", rev = "1ddfd2d19c810305ed4d8b9b117c23e338700efe" }
-holochain_p2p =   { git = "https://github.com/holochain/holochain", rev = "1ddfd2d19c810305ed4d8b9b117c23e338700efe" }
-holochain_types =   { git = "https://github.com/holochain/holochain", rev = "1ddfd2d19c810305ed4d8b9b117c23e338700efe" }
+holochain_conductor_api = "0.4.0-dev.2"
+holochain_p2p = "0.4.0-dev.2"
+holochain_types = "0.4.0-dev.2"
 lair_keystore_api = "0.4.4"
 
 futures = "0.3"
