@@ -1,8 +1,63 @@
-use holochain_types::app::AppBundle;
+use holochain_types::app::{AppBundle, AppManifest};
+use holochain_types::prelude::{RoleName, YamlProperties};
 use holochain_types::web_app::WebAppBundle;
 use sha2::{Digest, Sha256};
+use std::collections::HashMap;
 use std::fs;
 use std::path::PathBuf;
+
+#[napi]
+pub async fn happ_bytes_with_custom_properties(
+    happ_path: String,
+    properties: HashMap<String, Option<String>>,
+) -> napi::Result<Vec<u8>> {
+    // 1. read and decode happ bundle
+    let happ_bytes = fs::read(happ_path)?;
+    let app_bundle = AppBundle::decode(&happ_bytes)
+        .map_err(|e| napi::Error::from_reason(format!("Failed to decode happ file: {}", e)))?;
+    let inner_bundle = app_bundle.into_inner().clone();
+    let app_manifest = inner_bundle.manifest().clone();
+    let mut manifest_v1 = match app_manifest {
+        AppManifest::V1(man) => man,
+    };
+
+    // 2. set dna properties
+    let mut properties_map: HashMap<RoleName, Option<YamlProperties>> = HashMap::new();
+    for (role_name, maybe_props) in properties.iter() {
+        match maybe_props {
+            None => properties_map.insert(role_name.into(), None),
+            Some(props) => {
+                let yaml_value = serde_yaml::from_str::<lair_keystore_api::dependencies::serde_yaml::Value>(props).map_err(|e| {
+                    napi::Error::from_reason(format!(
+                        "Failed to convert properties to yaml Value: {e}"
+                    ))
+                })?;
+                println!("yaml_value: {:?}", yaml_value);
+                let yaml_properties = YamlProperties::from(yaml_value);
+                properties_map.insert(role_name.into(), Some(yaml_properties))
+            }
+        };
+    }
+    // 2.3. set dna properties
+    manifest_v1
+        .set_dna_properties(properties_map)
+        .map_err(|e| napi::Error::from_reason(format!("Failed to set dna properties: {e}")))?;
+
+    let modified_bundle = inner_bundle
+        .update_manifest(AppManifest::from(manifest_v1))
+        .map_err(|e| napi::Error::from_reason(format!("Failed to update manifest: {e}")))?;
+
+    let modified_app_bundle = AppBundle::from(modified_bundle);
+
+    let app_bundle_bytes = modified_app_bundle.encode().map_err(|e| {
+        napi::Error::from_reason(format!(
+            "Failed to encode modified AppBundle to bytes: {}",
+            e
+        ))
+    })?;
+
+    Ok(app_bundle_bytes)
+}
 
 #[napi]
 pub async fn save_happ_or_webhapp(

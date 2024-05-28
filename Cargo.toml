@@ -16,9 +16,9 @@ napi = { version = "2.12.2", default-features = false, features = [
 ] }
 napi-derive = "2.12.2"
 
-holochain_conductor_api = "0.4.0-dev.4"
-holochain_p2p = "0.4.0-dev.4"
-holochain_types = "0.4.0-dev.4"
+holochain_conductor_api = { git = "https://github.com/matthme/holochain", rev = "1a1e25e4c7fb8d9e08295346189c11c7cbbd3a2f"}
+holochain_p2p = { git = "https://github.com/matthme/holochain", rev = "1a1e25e4c7fb8d9e08295346189c11c7cbbd3a2f"}
+holochain_types = { git = "https://github.com/matthme/holochain", rev = "1a1e25e4c7fb8d9e08295346189c11c7cbbd3a2f"}
 lair_keystore_api = "0.4.4"
 
 futures = "0.3"
