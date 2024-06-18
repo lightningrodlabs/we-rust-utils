@@ -1,5 +1,5 @@
 use holochain_types::app::{AppBundle, AppManifest};
-use holochain_types::prelude::{RoleName, YamlProperties};
+use holochain_types::prelude::YamlProperties;
 use holochain_types::web_app::WebAppBundle;
 use sha2::{Digest, Sha256};
 use std::collections::HashMap;
@@ -15,36 +15,40 @@ pub async fn happ_bytes_with_custom_properties(
     let happ_bytes = fs::read(happ_path)?;
     let app_bundle = AppBundle::decode(&happ_bytes)
         .map_err(|e| napi::Error::from_reason(format!("Failed to decode happ file: {}", e)))?;
-    let inner_bundle = app_bundle.into_inner().clone();
-    let app_manifest = inner_bundle.manifest().clone();
-    let mut manifest_v1 = match app_manifest {
-        AppManifest::V1(man) => man,
-    };
 
-    // 2. set dna properties
-    let mut properties_map: HashMap<RoleName, Option<YamlProperties>> = HashMap::new();
-    for (role_name, maybe_props) in properties.iter() {
-        match maybe_props {
-            None => properties_map.insert(role_name.into(), None),
-            Some(props) => {
-                let yaml_value = serde_yaml::from_str::<lair_keystore_api::dependencies::serde_yaml::Value>(props).map_err(|e| {
-                    napi::Error::from_reason(format!(
-                        "Failed to convert properties to yaml Value: {e}"
-                    ))
-                })?;
-                println!("yaml_value: {:?}", yaml_value);
-                let yaml_properties = YamlProperties::from(yaml_value);
-                properties_map.insert(role_name.into(), Some(yaml_properties))
+    let mut manifest = app_bundle.manifest().clone();
+
+    match manifest {
+        AppManifest::V1(ref mut m) => {
+            for role_manifest in m.roles.iter_mut() {
+                match properties.get(&role_manifest.name) {
+                    Some(maybe_props) => match maybe_props {
+                        Some(props) => {
+                            let yaml_value = serde_yaml::from_str::<
+                                lair_keystore_api::dependencies::serde_yaml::Value,
+                            >(props)
+                            .map_err(|e| {
+                                napi::Error::from_reason(format!(
+                                    "Failed to convert properties to yaml Value: {e}"
+                                ))
+                            })?;
+                            println!("yaml_value: {:?}", yaml_value);
+                            let yaml_properties = YamlProperties::from(yaml_value);
+                            role_manifest.dna.modifiers.properties = Some(yaml_properties);
+                        },
+                        None => {
+                            role_manifest.dna.modifiers.properties = None;
+                        }
+                    },
+                    None => (),
+                }
             }
-        };
+        }
     }
-    // 2.3. set dna properties
-    manifest_v1
-        .set_dna_properties(properties_map)
-        .map_err(|e| napi::Error::from_reason(format!("Failed to set dna properties: {e}")))?;
 
-    let modified_bundle = inner_bundle
-        .update_manifest(AppManifest::from(manifest_v1))
+    let modified_bundle = app_bundle
+        .into_inner()
+        .update_manifest(manifest)
         .map_err(|e| napi::Error::from_reason(format!("Failed to update manifest: {e}")))?;
 
     let modified_app_bundle = AppBundle::from(modified_bundle);

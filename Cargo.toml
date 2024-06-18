@@ -1,7 +1,7 @@
 [package]
 edition = "2021"
 name = "lightningrodlabs_we-rust-utils"
-version = "0.400.0-dev.6"
+version = "0.400.0-dev.7"
 
 [lib]
 crate-type = ["cdylib"]
@@ -16,11 +16,10 @@ napi = { version = "2.12.2", default-features = false, features = [
 ] }
 napi-derive = "2.12.2"
 
-# holochain from branch https://github.com/matthme/holochain/commits/feat/set-dna-properties/
-holochain_conductor_api = { git = "https://github.com/matthme/holochain", rev = "a87766875760af8f94990139028a912b22203e8d"}
-holochain_p2p = { git = "https://github.com/matthme/holochain", rev = "a87766875760af8f94990139028a912b22203e8d"}
-holochain_types = { git = "https://github.com/matthme/holochain", rev = "a87766875760af8f94990139028a912b22203e8d"}
-lair_keystore_api = "0.4.4"
+holochain_conductor_api = { git = "https://github.com/holochain/holochain", rev = "9fc92667b775b893cb1a50c062554744fc0cbc06"}
+holochain_p2p = { git = "https://github.com/holochain/holochain", rev = "9fc92667b775b893cb1a50c062554744fc0cbc06"}
+holochain_types = { git = "https://github.com/holochain/holochain", rev = "9fc92667b775b893cb1a50c062554744fc0cbc06"}
+lair_keystore_api = "0.4.5"
 
 futures = "0.3"
 hex = "0.4.3"
