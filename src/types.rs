@@ -3,6 +3,7 @@ use holochain_types::prelude::{
     AgentPubKey, CapSecret, CellId, DnaHash, ExternIO, FunctionName, Timestamp, ZomeCallUnsigned,
     ZomeName,
 };
+use napi::Result;
 
 #[derive(Clone)]
 #[napi(object)]
@@ -17,12 +18,33 @@ pub struct ZomeCallUnsignedNapi {
     pub expires_at: i64,
 }
 
-impl Into<ZomeCallUnsigned> for ZomeCallUnsignedNapi {
-    fn into(self: Self) -> ZomeCallUnsigned {
-        ZomeCallUnsigned {
+impl TryInto<ZomeCallUnsigned> for ZomeCallUnsignedNapi {
+    type Error = napi::Error;
+    fn try_into(self: Self) -> Result<ZomeCallUnsigned> {
+        Ok(ZomeCallUnsigned {
             cell_id: CellId::new(
-                DnaHash::from_raw_39(self.cell_id.get(0).unwrap().clone()).unwrap(),
-                AgentPubKey::from_raw_39(self.cell_id.get(1).unwrap().clone()).unwrap(),
+                DnaHash::from_raw_39(
+                    self.cell_id
+                        .get(0)
+                        .ok_or(napi::Error::from_reason("CellId is of the wrong format."))?
+                        .clone(),
+                )
+                .map_err(|e| {
+                    napi::Error::from_reason(format!(
+                        "Failed to convert first element of CellId to DnaHash: {e}"
+                    ))
+                })?,
+                AgentPubKey::from_raw_39(
+                    self.cell_id
+                        .get(1)
+                        .ok_or(napi::Error::from_reason("CellId is of the wrong format."))?
+                        .clone(),
+                )
+                .map_err(|e| {
+                    napi::Error::from_reason(format!(
+                        "Failed to convert second element of CellId to AgentPubKey: {e}"
+                    ))
+                })?,
             ),
             zome_name: ZomeName::from(self.zome_name),
             fn_name: FunctionName::from(self.fn_name),
@@ -30,10 +52,15 @@ impl Into<ZomeCallUnsigned> for ZomeCallUnsignedNapi {
             cap_secret: self
                 .cap_secret
                 .map_or(None, |c| Some(CapSecret::from(vec_to_arr(c)))),
-            provenance: AgentPubKey::from_raw_39(self.provenance).unwrap(),
+            provenance: AgentPubKey::from_raw_39(self.provenance)
+            .map_err(|e| {
+                napi::Error::from_reason(format!(
+                    "Failed to convert provenance field to AgentPubKey: {e}"
+                ))
+            })?,
             nonce: vec_to_arr(self.nonce).into(),
             expires_at: Timestamp(self.expires_at),
-        }
+        })
     }
 }
 

@@ -3,7 +3,11 @@
 use std::ops::Deref;
 
 use holochain_types::prelude::{Signature, ZomeCallUnsigned};
-use lair_keystore_api::{dependencies::{sodoken::BufRead, url::Url}, ipc_keystore::ipc_keystore_connect, LairClient};
+use lair_keystore_api::{
+    dependencies::{sodoken::BufRead, url::Url},
+    ipc_keystore::ipc_keystore_connect,
+    LairClient,
+};
 use napi::Result;
 
 use crate::types::*;
@@ -14,15 +18,17 @@ struct ZomeCallSigner {
 
 impl ZomeCallSigner {
     /// Connect to lair keystore
-    pub async fn new(connection_url: String, passphrase: String) -> Self {
-        let connection_url_parsed = Url::parse(connection_url.deref()).unwrap();
+    pub async fn new(connection_url: String, passphrase: String) -> Result<Self> {
+        let connection_url_parsed = Url::parse(connection_url.deref())
+            .map_err(|e| napi::Error::from_reason(format!("Failed to parse keystore URL: {e}")))?;
+
         let passphrase_bufread: BufRead = passphrase.as_bytes().into();
 
         let lair_client = ipc_keystore_connect(connection_url_parsed, passphrase_bufread)
             .await
-            .unwrap();
+            .map_err(|e| napi::Error::from_reason(format!("Failed to connect to keystore: {e}")))?;
 
-        Self { lair_client }
+        Ok(Self { lair_client })
     }
 
     /// Sign a zome call
@@ -30,18 +36,22 @@ impl ZomeCallSigner {
         &self,
         zome_call_unsigned_js: ZomeCallUnsignedNapi,
     ) -> Result<ZomeCallNapi> {
-        let zome_call_unsigned: ZomeCallUnsigned = zome_call_unsigned_js.clone().into();
+        let zome_call_unsigned: ZomeCallUnsigned = zome_call_unsigned_js.clone().try_into()?;
         let pub_key = zome_call_unsigned.provenance.clone();
         let mut pub_key_2 = [0; 32];
         pub_key_2.copy_from_slice(pub_key.get_raw_32());
 
-        let data_to_sign = zome_call_unsigned.data_to_sign().unwrap();
+        let data_to_sign = zome_call_unsigned.data_to_sign().map_err(|e| {
+            napi::Error::from_reason(format!(
+                "Failed to get data to sign from unsigned zome call: {e}"
+            ))
+        })?;
 
         let sig = self
             .lair_client
             .sign_by_pub_key(pub_key_2.into(), None, data_to_sign)
             .await
-            .unwrap();
+            .map_err(|e| napi::Error::from_reason(format!("Failed to sign by pub key: {e}")))?;
 
         let signature = Signature(*sig.0);
 
@@ -76,12 +86,12 @@ impl JsZomeCallSigner {
     }
 
     #[napi]
-    pub async fn connect(connection_url: String, passphrase: String) -> Self {
-        let zome_call_signer = ZomeCallSigner::new(connection_url, passphrase).await;
+    pub async fn connect(connection_url: String, passphrase: String) -> Result<JsZomeCallSigner> {
+        let zome_call_signer = ZomeCallSigner::new(connection_url, passphrase).await?;
 
-        JsZomeCallSigner {
+        Ok(JsZomeCallSigner {
             zome_call_signer: Some(zome_call_signer),
-        }
+        })
     }
 
     #[napi]
@@ -91,7 +101,7 @@ impl JsZomeCallSigner {
     ) -> Result<ZomeCallNapi> {
         self.zome_call_signer
             .as_ref()
-            .unwrap()
+            .ok_or(napi::Error::from_reason("Failed to get reference to ZomeCallSigner"))?
             .sign_zome_call(zome_call_unsigned_js)
             .await
     }
