@@ -9,7 +9,7 @@ permissions:
 'on':
   push:
     branches:
-      - main
+      - debug
     tags-ignore:
       - '**'
     paths-ignore:
@@ -220,11 +220,11 @@ jobs:
           if git log -1 --pretty=%B | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+$";
           then
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-            npm publish --access public --tag dev
+            npm publish --access public --tag debug
           elif git log -1 --pretty=%B | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+";
           then
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-            npm publish --tag next --access public --tag dev
+            npm publish --tag next --access public --tag debug
           else
             echo "Not a release, skipping publish"
           fi
