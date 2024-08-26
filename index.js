@@ -295,8 +295,9 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { defaultConductorConfig, happBytesWithCustomProperties, saveHappOrWebhapp, validateHappOrWebhapp, WeRustHandler, ZomeCallSigner } = nativeBinding
+const { overwriteConfig, defaultConductorConfig, happBytesWithCustomProperties, saveHappOrWebhapp, validateHappOrWebhapp, WeRustHandler, ZomeCallSigner } = nativeBinding
 
+module.exports.overwriteConfig = overwriteConfig
 module.exports.defaultConductorConfig = defaultConductorConfig
 module.exports.happBytesWithCustomProperties = happBytesWithCustomProperties
 module.exports.saveHappOrWebhapp = saveHappOrWebhapp
