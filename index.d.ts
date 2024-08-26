@@ -8,6 +8,20 @@ export function happBytesWithCustomProperties(happPath: string, properties: Reco
 export function saveHappOrWebhapp(happOrWebHappPath: string, uisDir: string, happsDir: string): Promise<string>
 /** Checks that the happ or webhapp is of the correct format */
 export function validateHappOrWebhapp(happOrWebhappBytes: Array<number>): Promise<string>
+export interface KeyFile {
+  rootSeed: string
+  revocationSeed: string
+  deviceSeedsSeed: string
+  revocationKey0: string
+  deviceSeed0: string
+  timestamp: number
+}
+/**
+ * Generates root seed, revocation key and device seed
+ *
+ * Use a single passphrase for the whole file for starters
+ */
+export function generateInitialSeeds(passphrase: string): Promise<KeyFile>
 export interface ZomeCallUnsignedNapi {
   cellId: Array<Array<number>>
   zomeName: string
@@ -29,15 +43,16 @@ export interface ZomeCallNapi {
   expiresAt: number
   signature: Array<number>
 }
+export type JsMossLairClient = MossLairClient
+export class MossLairClient {
+  constructor()
+  static connect(connectionUrl: string, passphrase: string): Promise<MossLairClient>
+  signZomeCall(zomeCallUnsignedJs: ZomeCallUnsignedNapi): Promise<ZomeCallNapi>
+  importLockedSeedBundle(importLockedSeedBundle: string, passphrase: string, tag: string): Promise<string>
+}
 export type JsWeRustHandler = WeRustHandler
 export class WeRustHandler {
   constructor()
   static connect(keystoreUrl: string, passphrase: string): Promise<WeRustHandler>
-  signZomeCall(zomeCallUnsignedJs: ZomeCallUnsignedNapi): Promise<ZomeCallNapi>
-}
-export type JsZomeCallSigner = ZomeCallSigner
-export class ZomeCallSigner {
-  constructor()
-  static connect(connectionUrl: string, passphrase: string): Promise<ZomeCallSigner>
   signZomeCall(zomeCallUnsignedJs: ZomeCallUnsignedNapi): Promise<ZomeCallNapi>
 }

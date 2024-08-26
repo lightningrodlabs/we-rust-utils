@@ -295,11 +295,12 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { defaultConductorConfig, happBytesWithCustomProperties, saveHappOrWebhapp, validateHappOrWebhapp, WeRustHandler, ZomeCallSigner } = nativeBinding
+const { defaultConductorConfig, happBytesWithCustomProperties, saveHappOrWebhapp, validateHappOrWebhapp, generateInitialSeeds, MossLairClient, WeRustHandler } = nativeBinding
 
 module.exports.defaultConductorConfig = defaultConductorConfig
 module.exports.happBytesWithCustomProperties = happBytesWithCustomProperties
 module.exports.saveHappOrWebhapp = saveHappOrWebhapp
 module.exports.validateHappOrWebhapp = validateHappOrWebhapp
+module.exports.generateInitialSeeds = generateInitialSeeds
+module.exports.MossLairClient = MossLairClient
 module.exports.WeRustHandler = WeRustHandler
-module.exports.ZomeCallSigner = ZomeCallSigner
