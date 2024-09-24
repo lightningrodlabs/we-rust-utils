@@ -57,6 +57,7 @@ pub fn overwrite_config(
     allowed_origin: String,
     use_dpki: bool,
     ice_server_urls: Option<Vec<String>>,
+    keystore_in_proc_environment_dir: Option<String>,
 ) -> Result<String> {
     let mut config = std::fs::read_to_string(&PathBuf::from(config_path))
         .map_err(|_| create_error("Failed to read file"))
@@ -85,14 +86,24 @@ pub fn overwrite_config(
         Value::Sequence(vec![Value::Mapping(admin_interface)]),
     );
 
-    insert_mapping(
-        &mut config,
-        "keystore",
-        Value::Mapping(create_mapping_with_entries(vec![
-            ("type", Value::String(String::from("lair_server"))),
-            ("connection_url", Value::String(keystore_connection_url)),
-        ])),
-    );
+    match keystore_in_proc_environment_dir {
+        Some(path) => insert_mapping(
+            &mut config,
+            "keystore",
+            Value::Mapping(create_mapping_with_entries(vec![
+                ("type", Value::String(String::from("lair_server_in_proc"))),
+                ("lair_root", Value::String(path)),
+            ])),
+        ),
+        None => insert_mapping(
+            &mut config,
+            "keystore",
+            Value::Mapping(create_mapping_with_entries(vec![
+                ("type", Value::String(String::from("lair_server"))),
+                ("connection_url", Value::String(keystore_connection_url)),
+            ])),
+        ),
+    };
 
     let dpki_config = match use_dpki {
         true => DpkiConfig::default(),
@@ -166,6 +177,7 @@ pub fn default_conductor_config(
     allowed_origin: String,
     use_dpki: bool,
     ice_server_urls: Option<Vec<String>>,
+    keystore_in_proc_environment_dir: Option<String>,
 ) -> Result<String> {
     let mut network_config = KitsuneP2pConfig::default();
     network_config.bootstrap_service = Some(url2::url2!("{}", bootstrap_server_url));
@@ -191,14 +203,23 @@ pub fn default_conductor_config(
         false => DpkiConfig::disabled(),
     };
 
+    // If a keystore environment directory for in-process lair is provided, ignore
+    // the value passed with keystore_connection_url
+    let keystore_config = match keystore_in_proc_environment_dir {
+        Some(path) => KeystoreConfig::LairServerInProc {
+            lair_root: Some(PathBuf::from(path).into()),
+        },
+        None => KeystoreConfig::LairServer {
+            connection_url: url2::url2!("{}", keystore_connection_url),
+        },
+    };
+
     let config = ConductorConfig {
         data_root_path: Some(DataRootPath::from(PathBuf::from(
             conductor_environment_path,
         ))),
         dpki: dpki_config,
-        keystore: KeystoreConfig::LairServer {
-            connection_url: url2::url2!("{}", keystore_connection_url),
-        },
+        keystore: keystore_config,
         admin_interfaces: Some(vec![AdminInterfaceConfig {
             driver: InterfaceDriver::Websocket {
                 port: admin_port,
