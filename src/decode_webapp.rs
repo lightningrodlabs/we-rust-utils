@@ -163,6 +163,7 @@ pub async fn save_happ_or_webhapp(
 }
 
 /// Checks that the happ or webhapp is of the correct format
+/// WARNING: The decoding and encoding of the happ bytes seems to affect happ's sha256 hash.
 #[napi]
 pub async fn validate_happ_or_webhapp(happ_or_webhapp_bytes: Vec<u8>) -> napi::Result<String> {
     let (app_bundle, maybe_ui_and_webhapp_hash) = match WebAppBundle::decode(&happ_or_webhapp_bytes)
