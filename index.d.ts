@@ -5,10 +5,29 @@
 
 export function overwriteConfig(adminPort: number, configPath: string, keystoreConnectionUrl: string, bootstrapServerUrl: string, signalingServerUrl: string, allowedOrigin: string, useDpki: boolean, iceServerUrls?: Array<string> | undefined | null, keystoreInProcEnvironmentDir?: string | undefined | null): string
 export function defaultConductorConfig(adminPort: number, conductorEnvironmentPath: string, keystoreConnectionUrl: string, bootstrapServerUrl: string, signalingServerUrl: string, allowedOrigin: string, useDpki: boolean, iceServerUrls?: Array<string> | undefined | null, keystoreInProcEnvironmentDir?: string | undefined | null): string
+export interface HappAndUiHashes {
+  happSha256: string
+  webhappSha256?: string
+  uiSha256?: string
+}
+export interface StoredHappPathAndHashes {
+  happPath: string
+  happSha256: string
+  webhappSha256?: string
+  uiSha256?: string
+}
 export function happBytesWithCustomProperties(happPath: string, properties: Record<string, string | undefined | null>): Promise<Array<number>>
-export function saveHappOrWebhapp(happOrWebHappPath: string, uisDir: string, happsDir: string): Promise<string>
-/** Checks that the happ or webhapp is of the correct format */
-export function validateHappOrWebhapp(happOrWebhappBytes: Array<number>): Promise<string>
+/**
+ * Saves a happ or a webhapp file. If a uis_dir is specified and it is a webhapp,
+ * then the UI will be stored in [uis_dir]/[sha 256 of UI]/assets. If no uis_dir
+ * is specified, only the happ file will be stored.
+ */
+export function saveHappOrWebhapp(happOrWebHappPath: string, happsDir: string, uisDir?: string | undefined | null): Promise<StoredHappPathAndHashes>
+/**
+ * Checks that the happ or webhapp is of the correct format
+ * WARNING: The decoding and encoding of the happ bytes seems to affect happ's sha256 hash.
+ */
+export function validateHappOrWebhapp(happOrWebhappBytes: Array<number>): Promise<HappAndUiHashes>
 export interface ZomeCallUnsignedNapi {
   cellId: Array<Array<number>>
   zomeName: string
