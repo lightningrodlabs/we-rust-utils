@@ -219,6 +219,8 @@ pub fn default_conductor_config(
             conductor_environment_path,
         ))),
         dpki: dpki_config,
+        device_seed_lair_tag: None,
+        danger_generate_throwaway_device_seed: false,
         keystore: keystore_config,
         admin_interfaces: Some(vec![AdminInterfaceConfig {
             driver: InterfaceDriver::Websocket {
