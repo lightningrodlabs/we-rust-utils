@@ -4,7 +4,9 @@ use holochain_conductor_api::{
     conductor::{paths::DataRootPath, ConductorConfig, KeystoreConfig},
     AdminInterfaceConfig, InterfaceDriver,
 };
-use holochain_p2p::kitsune_p2p::dependencies::kitsune_p2p_types::config::{tuning_params_struct::KitsuneP2pTuningParams, KitsuneP2pConfig, TransportConfig};
+use holochain_p2p::kitsune_p2p::dependencies::kitsune_p2p_types::config::{
+    tuning_params_struct::KitsuneP2pTuningParams, KitsuneP2pConfig, TransportConfig,
+};
 use holochain_types::websocket::AllowedOrigins;
 use std::{collections::HashSet, path::PathBuf};
 
@@ -16,6 +18,7 @@ pub fn default_conductor_config(
     bootstrap_server_url: String,
     signaling_server_url: String,
     allowed_origin: String,
+    keystore_in_proc_environment_dir: Option<String>,
 ) -> String {
     let mut network_config = KitsuneP2pConfig::default();
     network_config.bootstrap_service = Some(url2::url2!("{}", bootstrap_server_url));
@@ -31,14 +34,28 @@ pub fn default_conductor_config(
     let mut allowed_origins_map = HashSet::new();
     allowed_origins_map.insert(allowed_origin);
 
-    let config = ConductorConfig {
-        data_root_path: Some(DataRootPath::from(PathBuf::from(conductor_environment_path))),
-        dpki: None,
-        keystore: KeystoreConfig::LairServer {
+    // If a keystore environment directory for in-process lair is provided, ignore
+    // the value passed with keystore_connection_url
+    let keystore_config = match keystore_in_proc_environment_dir {
+        Some(path) => KeystoreConfig::LairServerInProc {
+            lair_root: Some(PathBuf::from(path).into()),
+        },
+        None => KeystoreConfig::LairServer {
             connection_url: url2::url2!("{}", keystore_connection_url),
         },
+    };
+
+    let config = ConductorConfig {
+        data_root_path: Some(DataRootPath::from(PathBuf::from(
+            conductor_environment_path,
+        ))),
+        dpki: None,
+        keystore: keystore_config,
         admin_interfaces: Some(vec![AdminInterfaceConfig {
-            driver: InterfaceDriver::Websocket { port: admin_port, allowed_origins: AllowedOrigins::Origins(allowed_origins_map) },
+            driver: InterfaceDriver::Websocket {
+                port: admin_port,
+                allowed_origins: AllowedOrigins::Origins(allowed_origins_map),
+            },
         }]),
         network: network_config,
         db_sync_strategy: Default::default(),
