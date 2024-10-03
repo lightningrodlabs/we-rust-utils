@@ -1,6 +1,6 @@
 {
   "name": "@lightningrodlabs/we-rust-utils-win32-x64-msvc",
-  "version": "0.300.1",
+  "version": "0.300.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/lightningrodlabs/we-rust-utils"
