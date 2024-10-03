@@ -2994,7 +2994,7 @@ dependencies = [
 
 [[package]]
 name = "lightningrodlabs_we-rust-utils"
-version = "0.400.0-dev.10"
+version = "0.400.0-dev.12"
 dependencies = [
  "futures",
  "hex",
