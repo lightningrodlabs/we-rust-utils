@@ -29,7 +29,7 @@ jobs:
           - host: macos-latest
             target: x86_64-apple-darwin
             build: |
-              yarn build --target x86_64-apple-darwin
+              FIX_SQL_FMT=1 yarn build --target x86_64-apple-darwin
               strip -x *.node
           - host: windows-latest
             build: yarn build
@@ -38,12 +38,12 @@ jobs:
             target: x86_64-unknown-linux-gnu
             build: |-
               set -e &&
-              yarn build --target x86_64-unknown-linux-gnu &&
+              FIX_SQL_FMT=1 yarn build --target x86_64-unknown-linux-gnu &&
               strip *.node
           - host: macos-latest
             target: aarch64-apple-darwin
             build: |
-              yarn build --target aarch64-apple-darwin
+              FIX_SQL_FMT=1 yarn build --target aarch64-apple-darwin
               strip -x *.node
     name: stable - ${{ matrix.settings.target }} - node@18
     runs-on: ${{ matrix.settings.host }}
