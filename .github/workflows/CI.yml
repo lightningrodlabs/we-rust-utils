@@ -49,9 +49,14 @@ jobs:
             target: aarch64-unknown-linux-gnu
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
             build: |
+              echo "fetching zig tar"
               curl --output zig-linux-aarch64-0.13.0.tar.xz https://ziglang.org/download/0.13.0/zig-linux-aarch64-0.13.0.tar.xz
+              echo "unzipping zig"
               tar xf zig-linux-aarch64-0.13.0.tar.xz
+              ls
+              echo "exporting path"
               echo 'export PATH="$HOME/zig-linux-x86_64-0.13.0:$PATH"' >> ~/.bashrc
+              echo "zig version"
               zig version
               yarn build --zig --target aarch64-unknown-linux-gnu
           # - host: ubuntu-latest
