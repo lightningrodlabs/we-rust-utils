@@ -49,15 +49,15 @@ jobs:
             target: aarch64-unknown-linux-gnu
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
             build: |
-              zig --version
-              echo $PATH
-              yarn build --zig --target aarch64-unknown-linux-gnu
-          - host: ubuntu-latest
-            target: armv7-unknown-linux-gnueabihf
-            setup: |
               sudo apt-get update
-              sudo apt-get install gcc-arm-linux-gnueabihf -y
-            build: yarn build --zig --target armv7-unknown-linux-gnueabihf
+              sudo apt-get install zig
+              yarn build --zig --target aarch64-unknown-linux-gnu
+          # - host: ubuntu-latest
+          #   target: armv7-unknown-linux-gnueabihf
+          #   setup: |
+          #     sudo apt-get update
+          #     sudo apt-get install gcc-arm-linux-gnueabihf -y
+          #   build: yarn build --zig --target armv7-unknown-linux-gnueabihf
 
     name: stable - ${{ matrix.settings.target }} - node@20
     runs-on: ${{ matrix.settings.host }}
@@ -95,7 +95,7 @@ jobs:
           go-version: 'stable'
 
       - uses: goto-bus-stop/setup-zig@v2
-        if: ${{  matrix.settings.target == 'aarch64-unknown-linux-gnu' || matrix.settings.target == 'armv7-unknown-linux-gnueabihf' || matrix.settings.target == 'armv7-unknown-linux-musleabihf' }}
+        if: ${{ matrix.settings.target == 'armv7-unknown-linux-gnueabihf' || matrix.settings.target == 'armv7-unknown-linux-musleabihf' }}
         with:
           version: 0.11.0
 
