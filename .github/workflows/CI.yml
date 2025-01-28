@@ -56,7 +56,7 @@ jobs:
               pwd
               ls
               echo "exporting path"
-              echo 'export PATH="$(pwd)/zig-linux-x86_64-0.13.0:$PATH"' >> ~/.bashrc
+              echo 'export PATH="/build/zig-linux-x86_64-0.13.0:$PATH"' >> ~/.bashrc
               echo "zig version"
               zig version
               yarn build --zig --target aarch64-unknown-linux-gnu
