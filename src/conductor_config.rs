@@ -1,11 +1,8 @@
 #![deny(clippy::all)]
 
 use holochain_conductor_api::{
-    conductor::{paths::DataRootPath, ConductorConfig, DpkiConfig, KeystoreConfig},
+    conductor::{paths::DataRootPath, ConductorConfig, DpkiConfig, KeystoreConfig, NetworkConfig},
     AdminInterfaceConfig, InterfaceDriver,
-};
-use holochain_p2p::kitsune_p2p::dependencies::kitsune_p2p_types::config::{
-    tuning_params_struct::KitsuneP2pTuningParams, KitsuneP2pConfig, TransportConfig,
 };
 use holochain_types::websocket::AllowedOrigins;
 use napi::{Error, Result, Status};
@@ -179,21 +176,16 @@ pub fn default_conductor_config(
     ice_server_urls: Option<Vec<String>>,
     keystore_in_proc_environment_dir: Option<String>,
 ) -> Result<String> {
-    let mut network_config = KitsuneP2pConfig::default();
-    network_config.bootstrap_service = Some(url2::url2!("{}", bootstrap_server_url));
-
-    let tuning_params = KitsuneP2pTuningParams::default();
-    network_config.tuning_params = std::sync::Arc::new(tuning_params);
+    let mut network_config = NetworkConfig::default();
+    network_config.bootstrap_url = url2::url2!("{}", bootstrap_server_url);
+    network_config.signal_url = url2::url2!("{}", signaling_server_url);
 
     let webrtc_config = match ice_server_urls {
         Some(urls) => Some(webrtc_config_from_ice_urls(urls)),
         None => None,
     };
 
-    network_config.transport_pool.push(TransportConfig::WebRTC {
-        signal_url: signaling_server_url,
-        webrtc_config,
-    });
+    network_config.webrtc_config = webrtc_config;
 
     let mut allowed_origins_map = HashSet::new();
     allowed_origins_map.insert(allowed_origin);
@@ -232,6 +224,7 @@ pub fn default_conductor_config(
         db_sync_strategy: Default::default(),
         tracing_override: None,
         tuning_params: None,
+        tracing_scope: None,
     };
 
     serde_yaml::to_string(&config)
