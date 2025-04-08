@@ -116,6 +116,15 @@ jobs:
           cache: yarn
           architecture: x86
 
+      # https://github.com/holochain/holochain/blob/develop/.github/actions/common-pre/action.yml#L48
+      # Thanks to https://github.com/sfackler/rust-openssl/issues/2149#issuecomment-2014064057
+      - name: Set Perl environment variables
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          echo "PERL=$((where.exe perl)[0])" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          echo "OPENSSL_SRC_PERL=$((where.exe perl)[0])" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
       - name: Build in docker
         uses: addnab/docker-run-action@v3
         if: ${{ matrix.settings.docker }}
