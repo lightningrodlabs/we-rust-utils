@@ -5,9 +5,6 @@ use sha2::{Digest, Sha256};
 use std::collections::HashMap;
 use std::fs;
 use std::path::PathBuf;
-
-use crate::utils::hash_bytes_sha256;
-
 #[napi(object)]
 pub struct HappAndUiHashes {
     pub happ_sha256: String,
@@ -299,4 +296,12 @@ pub fn unzip_file(reader: fs::File, outpath: PathBuf) -> Result<(), String> {
     }
 
     Ok(())
+}
+
+pub fn hash_bytes_sha256(bytes: Vec<u8>) -> String {
+    let mut hasher = Sha256::new();
+
+    hasher.update(bytes);
+
+    hex::encode(hasher.finalize())
 }
