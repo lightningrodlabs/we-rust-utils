@@ -7,23 +7,10 @@ use holochain_conductor_api::{
 use holochain_types::websocket::AllowedOrigins;
 use napi::{Error, Result, Status};
 use napi_derive::napi;
-use serde_yaml::{Mapping, Sequence, Value};
 use std::{collections::HashSet, path::PathBuf};
 
 fn create_error(msg: &str) -> Error {
     Error::new(Status::GenericFailure, String::from(msg))
-}
-
-fn insert_mapping(mapping: &mut Mapping, key: &str, value: Value) {
-    mapping.insert(Value::String(String::from(key)), value);
-}
-
-fn create_mapping_with_entries(entries: Vec<(&str, Value)>) -> Mapping {
-    let mut mapping = Mapping::new();
-    for (key, value) in entries {
-        insert_mapping(&mut mapping, key, value);
-    }
-    mapping
 }
 
 fn webrtc_config_from_ice_urls(ice_server_urls: Vec<String>) -> serde_json::Value {
@@ -59,106 +46,40 @@ pub fn overwrite_config(
     let mut config = std::fs::read_to_string(&PathBuf::from(config_path))
         .map_err(|_| create_error("Failed to read file"))
         .and_then(|contents| {
-            serde_yaml::from_str::<Value>(&contents)
-                .map_err(|_| create_error("Failed to parse YAML"))
-        })
-        .and_then(|yaml| {
-            yaml.as_mapping()
-                .cloned()
-                .ok_or_else(|| create_error("Expected YAML content to be a mapping"))
+            serde_yaml::from_str::<ConductorConfig>(&contents)
+                .map_err(|_| create_error("Failed to parse conductor-config.yaml"))
         })?;
 
-    let websocket_interface = create_mapping_with_entries(vec![
-        ("type", Value::String(String::from("websocket"))),
-        ("port", Value::Number(admin_port.into())),
-        ("allowed_origins", Value::String(allowed_origin)),
-    ]);
-
-    let admin_interface =
-        create_mapping_with_entries(vec![("driver", Value::Mapping(websocket_interface))]);
-
-    insert_mapping(
-        &mut config,
-        "admin_interfaces",
-        Value::Sequence(vec![Value::Mapping(admin_interface)]),
-    );
-
-    match keystore_in_proc_environment_dir {
-        Some(path) => insert_mapping(
-            &mut config,
-            "keystore",
-            Value::Mapping(create_mapping_with_entries(vec![
-                ("type", Value::String(String::from("lair_server_in_proc"))),
-                ("lair_root", Value::String(path)),
-            ])),
-        ),
-        None => insert_mapping(
-            &mut config,
-            "keystore",
-            Value::Mapping(create_mapping_with_entries(vec![
-                ("type", Value::String(String::from("lair_server"))),
-                ("connection_url", Value::String(keystore_connection_url)),
-            ])),
-        ),
+    config.network.bootstrap_url = url2::url2!("{}", bootstrap_server_url);
+    config.network.signal_url = url2::url2!("{}", signaling_server_url);
+    config.network.webrtc_config = if ice_server_urls.is_some() {
+        Some(webrtc_config_from_ice_urls(ice_server_urls.unwrap()))
+    } else {
+        None
     };
 
-    let dpki_config = match use_dpki {
+    config.admin_interfaces = Some(vec![AdminInterfaceConfig {
+        driver: InterfaceDriver::Websocket {
+            port: admin_port,
+            allowed_origins: AllowedOrigins::Origins(HashSet::from([allowed_origin])),
+        },
+    }]);
+
+    config.dpki = match use_dpki {
         true => DpkiConfig::default(),
         false => DpkiConfig::disabled(),
     };
 
-    let dpki_yaml = serde_yaml::to_value(dpki_config).map_err(|e| {
-        create_error(format!("Failed to convert DpkiConfig to yaml Value: {}", e).as_str())
-    })?;
-
-    insert_mapping(&mut config, "dpki", dpki_yaml);
-
-    let network = config
-        .get_mut(&Value::String(String::from("network")))
-        .and_then(|v| v.as_mapping_mut())
-        .ok_or_else(|| create_error("Expected 'network' entry in the config"))?;
-
-    network.insert(
-        Value::String(String::from("bootstrap_service")),
-        Value::String(bootstrap_server_url),
-    );
-
-    let mut webrtc_config = Mapping::new();
-    if let Some(ice_urls) = ice_server_urls.clone() {
-        let mut ice_servers = Sequence::new();
-        for url in ice_urls {
-            let mut url_mapping = Mapping::new();
-            let mut url_list = Sequence::new();
-            url_list.push(Value::String(url));
-            insert_mapping(&mut url_mapping, "urls", Value::Sequence(url_list));
-            ice_servers.push(Value::Mapping(url_mapping));
-        }
-        insert_mapping(
-            &mut webrtc_config,
-            "ice_servers",
-            Value::Sequence(ice_servers),
-        );
-    }
-
-    let transport_pool = network
-        .entry(Value::String(String::from("transport_pool")))
-        .or_insert_with(|| Value::Sequence(Vec::new()));
-
-    if let Value::Sequence(transport_pool_seq) = transport_pool {
-        transport_pool_seq.clear(); // Clear existing transport pool entries
-        let mut transport_pool_mapping = create_mapping_with_entries(vec![
-            ("type", Value::String(String::from("webrtc"))),
-            ("signal_url", Value::String(signaling_server_url)),
-        ]);
-        if let Some(_) = ice_server_urls {
-            insert_mapping(
-                &mut transport_pool_mapping,
-                "webrtc_config",
-                Value::Mapping(webrtc_config),
-            );
-        }
-        transport_pool_seq.push(Value::Mapping(transport_pool_mapping));
-    }
+    // If a keystore environment directory for in-process lair is provided, ignore
+    // the value passed with keystore_connection_url
+    config.keystore = match keystore_in_proc_environment_dir {
+        Some(path) => KeystoreConfig::LairServerInProc {
+            lair_root: Some(PathBuf::from(path).into()),
+        },
+        None => KeystoreConfig::LairServer {
+            connection_url: url2::url2!("{}", keystore_connection_url),
+        },
+    };
 
     serde_yaml::to_string(&config)
         .map_err(|_| create_error("Could not convert conductor config to string"))
