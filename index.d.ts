@@ -28,36 +28,15 @@ export function saveHappOrWebhapp(happOrWebHappPath: string, happsDir: string, u
  * WARNING: The decoding and encoding of the happ bytes seems to affect happ's sha256 hash.
  */
 export function validateHappOrWebhapp(happOrWebhappBytes: Array<number>): Promise<HappAndUiHashes>
-export interface ZomeCallUnsignedNapi {
-  cellId: Array<Array<number>>
-  zomeName: string
-  fnName: string
-  payload: Array<number>
-  capSecret?: Array<number>
-  provenance: Array<number>
-  nonce: Array<number>
-  expiresAt: number
-}
-export interface ZomeCallNapi {
-  cellId: Array<Array<number>>
-  zomeName: string
-  fnName: string
-  payload: Array<number>
-  capSecret?: Array<number>
-  provenance: Array<number>
-  nonce: Array<number>
-  expiresAt: number
-  signature: Array<number>
-}
 export type JsWeRustHandler = WeRustHandler
 export class WeRustHandler {
   constructor()
   static connect(keystoreUrl: string, passphrase: string): Promise<WeRustHandler>
-  signZomeCall(zomeCallUnsignedJs: ZomeCallUnsignedNapi): Promise<ZomeCallNapi>
+  signZomeCall(payload: Array<number>, pubKey: Array<number>): Promise<Array<number>>
 }
 export type JsZomeCallSigner = ZomeCallSigner
 export class ZomeCallSigner {
   constructor()
   static connect(connectionUrl: string, passphrase: string): Promise<ZomeCallSigner>
-  signZomeCall(zomeCallUnsignedJs: ZomeCallUnsignedNapi): Promise<ZomeCallNapi>
+  signZomeCall(payload: Array<number>, pubKey: Array<number>): Promise<Array<number>>
 }
