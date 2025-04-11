@@ -38,7 +38,7 @@ fn webrtc_config_from_ice_urls(ice_server_urls: Vec<String>) -> serde_json::Valu
         ice_servers.push(serde_json::Value::Object(url_mapping));
     }
     webrtc_config.insert(
-        String::from("ice_servers"),
+        String::from("iceServers"),
         serde_json::Value::Array(ice_servers),
     );
     serde_json::Value::Object(webrtc_config)
