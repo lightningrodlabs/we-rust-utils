@@ -39,7 +39,7 @@ pub fn overwrite_config(
     bootstrap_server_url: String,
     signaling_server_url: String,
     allowed_origin: String,
-    use_dpki: bool,
+    signal_allow_plain_text: bool,
     ice_server_urls: Option<Vec<String>>,
     keystore_in_proc_environment_dir: Option<String>,
 ) -> Result<String> {
@@ -58,17 +58,22 @@ pub fn overwrite_config(
         None
     };
 
+    if signal_allow_plain_text {
+        config.network.advanced = Some(serde_json::json!({
+            // Allow plaintext signal for testing, and set a short timeout for network requests
+            // so that shutting down a conductor won't keep tx5 busy for too long.
+            "tx5Transport": {
+                "signalAllowPlainText": true,
+            },
+        }));
+    }
+
     config.admin_interfaces = Some(vec![AdminInterfaceConfig {
         driver: InterfaceDriver::Websocket {
             port: admin_port,
             allowed_origins: AllowedOrigins::Origins(HashSet::from([allowed_origin])),
         },
     }]);
-
-    config.dpki = match use_dpki {
-        true => DpkiConfig::default(),
-        false => DpkiConfig::disabled(),
-    };
 
     // If a keystore environment directory for in-process lair is provided, ignore
     // the value passed with keystore_connection_url
@@ -93,7 +98,7 @@ pub fn default_conductor_config(
     bootstrap_server_url: String,
     signaling_server_url: String,
     allowed_origin: String,
-    use_dpki: bool,
+    signal_allow_plain_text: bool,
     ice_server_urls: Option<Vec<String>>,
     keystore_in_proc_environment_dir: Option<String>,
 ) -> Result<String> {
@@ -106,15 +111,20 @@ pub fn default_conductor_config(
         None => None,
     };
 
+    if signal_allow_plain_text {
+        network_config.advanced = Some(serde_json::json!({
+            // Allow plaintext signal for testing, and set a short timeout for network requests
+            // so that shutting down a conductor won't keep tx5 busy for too long.
+            "tx5Transport": {
+                "signalAllowPlainText": true,
+            },
+        }));
+    }
+
     network_config.webrtc_config = webrtc_config;
 
     let mut allowed_origins_map = HashSet::new();
     allowed_origins_map.insert(allowed_origin);
-
-    let dpki_config = match use_dpki {
-        true => DpkiConfig::default(),
-        false => DpkiConfig::disabled(),
-    };
 
     // If a keystore environment directory for in-process lair is provided, ignore
     // the value passed with keystore_connection_url
@@ -131,7 +141,7 @@ pub fn default_conductor_config(
         data_root_path: Some(DataRootPath::from(PathBuf::from(
             conductor_environment_path,
         ))),
-        dpki: dpki_config,
+        dpki: DpkiConfig::disabled(),
         device_seed_lair_tag: None,
         danger_generate_throwaway_device_seed: false,
         keystore: keystore_config,
