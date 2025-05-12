@@ -47,7 +47,6 @@ jobs:
           #     strip -x *.node
           - host: ubuntu-latest
             target: aarch64-unknown-linux-gnu
-            shell: bash
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
             build: |
               echo "fetching zig tar"
@@ -57,8 +56,10 @@ jobs:
               pwd
               ls
               echo "exporting path"
-              echo 'export PATH="/build/zig-linux-x86_64-0.13.0:$PATH"' >> ~/.bashrc
-              source ~/.bashrc
+              export PATH=$PATH:/build/zig-linux-x86_64-0.13.0
+              # export PATH=$PATH:/build/zig-linux-x86_64-0.13.0
+              # echo 'export PATH=$PATH:/build/zig-linux-x86_64-0.13.0' >> ~/.bashrc
+              # source ~/.bashrc
               echo "zig version"
               zig version
               yarn build --zig --target aarch64-unknown-linux-gnu
