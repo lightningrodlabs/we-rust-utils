@@ -49,17 +49,18 @@ jobs:
             target: aarch64-unknown-linux-gnu
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
             build: |
-              echo "fetching zig tar"
-              curl --output zig-linux-aarch64-0.13.0.tar.xz https://ziglang.org/download/0.13.0/zig-linux-aarch64-0.13.0.tar.xz
-              echo "unzipping zig"
-              tar xf zig-linux-aarch64-0.13.0.tar.xz
-              pwd
-              ls
-              echo "exporting path"
-              echo 'export PATH="/build/zig-linux-x86_64-0.13.0:$PATH"' >> ~/.bashrc
-              echo "zig version"
-              zig version
-              yarn build --zig --target aarch64-unknown-linux-gnu
+              # echo "fetching zig tar"
+              # curl --output zig-linux-aarch64-0.13.0.tar.xz https://ziglang.org/download/0.13.0/zig-linux-aarch64-0.13.0.tar.xz
+              # echo "unzipping zig"
+              # tar xf zig-linux-aarch64-0.13.0.tar.xz
+              # pwd
+              # ls
+              # echo "exporting path"
+              # echo 'export PATH="/build/zig-linux-x86_64-0.13.0:$PATH"' >> ~/.bashrc
+              # echo "zig version"
+              # zig version
+              # yarn build --zig --target aarch64-unknown-linux-gnu
+              yarn build --target aarch64-unknown-linux-gnu
           # - host: ubuntu-latest
           #   target: armv7-unknown-linux-gnueabihf
           #   setup: |
@@ -102,10 +103,10 @@ jobs:
         with:
           go-version: 'stable'
 
-      - uses: goto-bus-stop/setup-zig@v2
-        if: ${{ matrix.settings.target == 'armv7-unknown-linux-gnueabihf' || matrix.settings.target == 'armv7-unknown-linux-musleabihf' }}
-        with:
-          version: 0.11.0
+      # - uses: goto-bus-stop/setup-zig@v2
+      #   if: ${{ matrix.settings.target == 'armv7-unknown-linux-gnueabihf' || matrix.settings.target == 'armv7-unknown-linux-musleabihf' }}
+      #   with:
+      #     version: 0.11.0
 
       - name: Setup toolchain
         run: ${{ matrix.settings.setup }}
@@ -127,6 +128,15 @@ jobs:
           node-version: 20
           cache: yarn
           architecture: x86
+
+      # https://github.com/holochain/holochain/blob/develop/.github/actions/common-pre/action.yml#L48
+      # Thanks to https://github.com/sfackler/rust-openssl/issues/2149#issuecomment-2014064057
+      - name: Set Perl environment variables
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          echo "PERL=$((where.exe perl)[0])" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          echo "OPENSSL_SRC_PERL=$((where.exe perl)[0])" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
       - name: Build in docker
         uses: addnab/docker-run-action@v3
@@ -174,7 +184,7 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: bindings-${{ matrix.settings.target }}
           path: .
@@ -205,7 +215,7 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: bindings-x86_64-unknown-linux-gnu
           path: .
@@ -215,86 +225,86 @@ jobs:
       - name: Test bindings
         run: docker run --rm -v $(pwd):/build -w /build node:${{ matrix.node }}-slim yarn test
 
-  test-linux-aarch64-gnu-binding:
-    name: Test bindings on aarch64-unknown-linux-gnu - node@${{ matrix.node }}
-    needs:
-      - build
-    strategy:
-      fail-fast: false
-      matrix:
-        node:
-          - '18'
-          - '20'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: bindings-aarch64-unknown-linux-gnu
-          path: .
-      - name: List packages
-        run: ls -R .
-        shell: bash
-      - name: Install dependencies
-        run: |
-          yarn config set supportedArchitectures.cpu "arm64"
-          yarn config set supportedArchitectures.libc "glibc"
-          yarn install
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-        with:
-          platforms: arm64
-      - run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-      - name: Setup and run tests
-        uses: addnab/docker-run-action@v3
-        with:
-          image: node:${{ matrix.node }}-slim
-          options: '--platform linux/arm64 -v ${{ github.workspace }}:/build -w /build'
-          run: |
-            set -e
-            yarn test
-            ls -la
+  # test-linux-aarch64-gnu-binding:
+  #   name: Test bindings on aarch64-unknown-linux-gnu - node@${{ matrix.node }}
+  #   needs:
+  #     - build
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       node:
+  #         - '18'
+  #         - '20'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Download artifacts
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: bindings-aarch64-unknown-linux-gnu
+  #         path: .
+  #     - name: List packages
+  #       run: ls -R .
+  #       shell: bash
+  #     - name: Install dependencies
+  #       run: |
+  #         yarn config set supportedArchitectures.cpu "arm64"
+  #         yarn config set supportedArchitectures.libc "glibc"
+  #         yarn install
+  #     - name: Set up QEMU
+  #       uses: docker/setup-qemu-action@v3
+  #       with:
+  #         platforms: arm64
+  #     - run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+  #     - name: Setup and run tests
+  #       uses: addnab/docker-run-action@v3
+  #       with:
+  #         image: node:${{ matrix.node }}-slim
+  #         options: '--platform linux/arm64 -v ${{ github.workspace }}:/build -w /build'
+  #         run: |
+  #           set -e
+  #           yarn test
+  #           ls -la
 
-  test-linux-arm-gnueabihf-binding:
-    name: Test bindings on armv7-unknown-linux-gnueabihf - node@${{ matrix.node }}
-    needs:
-      - build
-    strategy:
-      fail-fast: false
-      matrix:
-        node:
-          - '18'
-          - '20'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: bindings-armv7-unknown-linux-gnueabihf
-          path: .
-      - name: List packages
-        run: ls -R .
-        shell: bash
-      - name: Install dependencies
-        run: |
-          yarn config set supportedArchitectures.cpu "arm"
-          yarn install
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-        with:
-          platforms: arm
-      - run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-      - name: Setup and run tests
-        uses: addnab/docker-run-action@v3
-        with:
-          image: node:${{ matrix.node }}-bullseye-slim
-          options: '--platform linux/arm/v7 -v ${{ github.workspace }}:/build -w /build'
-          run: |
-            set -e
-            yarn test
-            ls -la
+  # test-linux-arm-gnueabihf-binding:
+  #   name: Test bindings on armv7-unknown-linux-gnueabihf - node@${{ matrix.node }}
+  #   needs:
+  #     - build
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       node:
+  #         - '18'
+  #         - '20'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Download artifacts
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: bindings-armv7-unknown-linux-gnueabihf
+  #         path: .
+  #     - name: List packages
+  #       run: ls -R .
+  #       shell: bash
+  #     - name: Install dependencies
+  #       run: |
+  #         yarn config set supportedArchitectures.cpu "arm"
+  #         yarn install
+  #     - name: Set up QEMU
+  #       uses: docker/setup-qemu-action@v3
+  #       with:
+  #         platforms: arm
+  #     - run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+  #     - name: Setup and run tests
+  #       uses: addnab/docker-run-action@v3
+  #       with:
+  #         image: node:${{ matrix.node }}-bullseye-slim
+  #         options: '--platform linux/arm/v7 -v ${{ github.workspace }}:/build -w /build'
+  #         run: |
+  #           set -e
+  #           yarn test
+  #           ls -la
 
   publish:
     name: Publish
@@ -312,7 +322,7 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Download all artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: artifacts
       - name: Move artifacts

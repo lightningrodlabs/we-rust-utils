@@ -5,9 +5,6 @@ use sha2::{Digest, Sha256};
 use std::collections::HashMap;
 use std::fs;
 use std::path::PathBuf;
-
-use crate::utils::hash_bytes_sha256;
-
 #[napi(object)]
 pub struct HappAndUiHashes {
     pub happ_sha256: String,
@@ -273,24 +270,38 @@ pub fn unzip_file(reader: fs::File, outpath: PathBuf) -> Result<(), String> {
     };
 
     for i in 0..archive.len() {
-        let mut file = archive.by_index(i).unwrap();
+        let mut file = archive
+            .by_index(i)
+            .map_err(|e| format!("Failed to get contained file by index: {e}"))?;
         let outpath = match file.enclosed_name() {
             Some(path) => outpath.join(path).to_owned(),
             None => continue,
         };
 
         if (&*file.name()).ends_with('/') {
-            fs::create_dir_all(&outpath).unwrap();
+            fs::create_dir_all(&outpath)
+                .map_err(|e| format!("Failed to create directories: {e}"))?;
         } else {
             if let Some(p) = outpath.parent() {
                 if !p.exists() {
-                    fs::create_dir_all(&p).unwrap();
+                    fs::create_dir_all(&p)
+                        .map_err(|e| format!("Failed to create directories: {e}"))?;
                 }
             }
-            let mut outfile = fs::File::create(&outpath).unwrap();
-            std::io::copy(&mut file, &mut outfile).unwrap();
+            let mut outfile =
+                fs::File::create(&outpath).map_err(|e| format!("Failed to create file: {e}"))?;
+            std::io::copy(&mut file, &mut outfile)
+                .map_err(|e| format!("Failed to copy file: {e}"))?;
         }
     }
 
     Ok(())
+}
+
+pub fn hash_bytes_sha256(bytes: Vec<u8>) -> String {
+    let mut hasher = Sha256::new();
+
+    hasher.update(bytes);
+
+    hex::encode(hasher.finalize())
 }
