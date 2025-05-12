@@ -51,13 +51,13 @@ jobs:
             build: |
               uname -a
               echo "fetching zig tar"
-              curl --output zig-linux-aarch64-0.13.0.tar.xz https://ziglang.org/download/0.13.0/zig-linux-aarch64-0.13.0.tar.xz
+              curl --output zig-linux-x86_64-0.13.0.tar.xz https://ziglang.org/download/0.13.0/zig-linux-x86_64-0.13.0.tar.xz
               echo "unzipping zig"
-              tar xf zig-linux-aarch64-0.13.0.tar.xz
+              tar xf zig-linux-x86_64-0.13.0.tar.xz
               pwd
               ls
               echo "exporting path"
-              export PATH=$PATH:/build/zig-linux-aarch64-0.13.0
+              export PATH=$PATH:/build/zig-linux-x86_64-0.13.0
               # export PATH=$PATH:/build/zig-linux-x86_64-0.13.0
               # echo 'export PATH=$PATH:/build/zig-linux-aarch64-0.13.0' >> ~/.bashrc
               # source ~/.bashrc
