@@ -56,9 +56,9 @@ jobs:
               pwd
               ls
               echo "exporting path"
-              export PATH=$PATH:/build/zig-linux-x86_64-0.13.0
+              export PATH=$PATH:/build/zig-linux-aarch64-0.13.0
               # export PATH=$PATH:/build/zig-linux-x86_64-0.13.0
-              # echo 'export PATH=$PATH:/build/zig-linux-x86_64-0.13.0' >> ~/.bashrc
+              # echo 'export PATH=$PATH:/build/zig-linux-aarch64-0.13.0' >> ~/.bashrc
               # source ~/.bashrc
               echo "zig version"
               zig version
