@@ -59,8 +59,8 @@ jobs:
               # echo 'export PATH="/build/zig-linux-x86_64-0.13.0:$PATH"' >> ~/.bashrc
               # echo "zig version"
               # zig version
-              # yarn build --zig --target aarch64-unknown-linux-gnu
-              yarn build --target aarch64-unknown-linux-gnu
+              yarn build --zig --target aarch64-unknown-linux-gnu
+              # yarn build --target aarch64-unknown-linux-gnu
           # - host: ubuntu-latest
           #   target: armv7-unknown-linux-gnueabihf
           #   setup: |
