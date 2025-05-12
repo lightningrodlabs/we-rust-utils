@@ -49,16 +49,17 @@ jobs:
             target: aarch64-unknown-linux-gnu
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
             build: |
-              # echo "fetching zig tar"
-              # curl --output zig-linux-aarch64-0.13.0.tar.xz https://ziglang.org/download/0.13.0/zig-linux-aarch64-0.13.0.tar.xz
-              # echo "unzipping zig"
-              # tar xf zig-linux-aarch64-0.13.0.tar.xz
-              # pwd
-              # ls
-              # echo "exporting path"
-              # echo 'export PATH="/build/zig-linux-x86_64-0.13.0:$PATH"' >> ~/.bashrc
-              # echo "zig version"
-              # zig version
+              echo "fetching zig tar"
+              curl --output zig-linux-aarch64-0.13.0.tar.xz https://ziglang.org/download/0.13.0/zig-linux-aarch64-0.13.0.tar.xz
+              echo "unzipping zig"
+              tar xf zig-linux-aarch64-0.13.0.tar.xz
+              pwd
+              ls
+              echo "exporting path"
+              echo 'export PATH="/build/zig-linux-x86_64-0.13.0:$PATH"' >> ~/.bashrc
+              source ~/.bashrc
+              echo "zig version"
+              zig version
               yarn build --zig --target aarch64-unknown-linux-gnu
               # yarn build --target aarch64-unknown-linux-gnu
           # - host: ubuntu-latest
@@ -102,16 +103,6 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: 'stable'
-
-      # - uses: goto-bus-stop/setup-zig@v2
-      #   if: ${{ matrix.settings.target == 'armv7-unknown-linux-gnueabihf' || matrix.settings.target == 'armv7-unknown-linux-musleabihf' }}
-      #   with:
-      #     version: 0.11.0
-
-      - uses: mlugg/setup-zig@v2
-        # if: ${{ matrix.settings.target == 'armv7-unknown-linux-gnueabihf' || matrix.settings.target == 'aarch64-unknown-linux-gnu' || matrix.settings.target == 'armv7-unknown-linux-musleabihf' }}
-        with:
-          version: 0.13.0
 
       - name: Setup toolchain
         run: ${{ matrix.settings.setup }}
