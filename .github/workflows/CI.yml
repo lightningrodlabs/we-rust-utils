@@ -49,20 +49,20 @@ jobs:
             target: aarch64-unknown-linux-gnu
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
             build: |
-              uname -a
-              echo "fetching zig tar"
-              curl --output zig-linux-x86_64-0.13.0.tar.xz https://ziglang.org/download/0.13.0/zig-linux-x86_64-0.13.0.tar.xz
-              echo "unzipping zig"
-              tar xf zig-linux-x86_64-0.13.0.tar.xz
-              pwd
-              ls
-              echo "exporting path"
-              export PATH=$PATH:/build/zig-linux-x86_64-0.13.0
+              # uname -a
+              # echo "fetching zig tar"
+              # curl --output zig-linux-x86_64-0.13.0.tar.xz https://ziglang.org/download/0.13.0/zig-linux-x86_64-0.13.0.tar.xz
+              # echo "unzipping zig"
+              # tar xf zig-linux-x86_64-0.13.0.tar.xz
+              # pwd
+              # ls
+              # echo "exporting path"
               # export PATH=$PATH:/build/zig-linux-x86_64-0.13.0
-              # echo 'export PATH=$PATH:/build/zig-linux-aarch64-0.13.0' >> ~/.bashrc
-              # source ~/.bashrc
-              echo "zig version"
-              zig version
+              # # export PATH=$PATH:/build/zig-linux-x86_64-0.13.0
+              # # echo 'export PATH=$PATH:/build/zig-linux-aarch64-0.13.0' >> ~/.bashrc
+              # # source ~/.bashrc
+              # echo "zig version"
+              # zig version
               yarn build --zig --target aarch64-unknown-linux-gnu
               # yarn build --target aarch64-unknown-linux-gnu --zig-abi-suffix=gnu
           # - host: ubuntu-latest
