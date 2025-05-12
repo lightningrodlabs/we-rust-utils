@@ -49,6 +49,7 @@ jobs:
             target: aarch64-unknown-linux-gnu
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
             build: |
+              uname -a
               echo "fetching zig tar"
               curl --output zig-linux-aarch64-0.13.0.tar.xz https://ziglang.org/download/0.13.0/zig-linux-aarch64-0.13.0.tar.xz
               echo "unzipping zig"
