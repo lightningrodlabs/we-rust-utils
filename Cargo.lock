@@ -1411,34 +1411,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "holochain_conductor_api"
-version = "0.5.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f68ad382269e7846979a1dbd955a2915df4b6c512b60546bf26ccff568d4109c"
-dependencies = [
- "cfg-if 1.0.0",
- "derive_more 0.99.17",
- "holo_hash",
- "holochain_keystore",
- "holochain_serialized_bytes",
- "holochain_state_types",
- "holochain_types",
- "holochain_util",
- "holochain_zome_types",
- "indexmap 2.9.0",
- "kitsune2_api",
- "kitsune2_core",
- "schemars",
- "serde",
- "serde_json",
- "serde_yaml 0.9.34+deprecated",
- "shrinkwraprs",
- "thiserror 1.0.61",
- "tracing",
- "url2",
-]
-
-[[package]]
 name = "holochain_integrity_types"
 version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2475,7 +2447,6 @@ version = "0.500.0-rc.3"
 dependencies = [
  "futures",
  "hex",
- "holochain_conductor_api",
  "holochain_p2p",
  "holochain_types",
  "lair_keystore_api",
