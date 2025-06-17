@@ -47,7 +47,7 @@ jobs:
           #     strip -x *.node
           - host: ubuntu-latest
             target: aarch64-unknown-linux-gnu
-            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
+            # docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
             build: |
               uname -a
               echo "fetching zig tar"
@@ -72,14 +72,14 @@ jobs:
               # echo "zig version"
               # zig version
               # # Download libsodium
-              # mkdir libsodium
-              # curl -L --output ./libsodium/LATEST.tar.gz https://github.com/matthme/holochain-binaries/releases/download/libsodium-releases/LATEST.tar.gz
-              # curl -L --output ./libsodium/LATEST.tar.gz.minisig https://github.com/matthme/holochain-binaries/releases/download/libsodium-releases/LATEST.tar.gz.minisig
-              # curl -L --output ./libsodium/libsodium-1.0.19-stable.zip https://github.com/matthme/holochain-binaries/releases/download/libsodium-releases/libsodium-1.0.19-stable.zip
-              # curl -L --output ./libsodium/libsodium-1.0.19-stable.zip.minisig https://github.com/matthme/holochain-binaries/releases/download/libsodium-releases/libsodium-1.0.19-stable.zip.minisig
+              mkdir libsodium
+              curl -L --output ./libsodium/LATEST.tar.gz https://github.com/matthme/holochain-binaries/releases/download/libsodium-releases/LATEST.tar.gz
+              curl -L --output ./libsodium/LATEST.tar.gz.minisig https://github.com/matthme/holochain-binaries/releases/download/libsodium-releases/LATEST.tar.gz.minisig
+              curl -L --output ./libsodium/libsodium-1.0.19-stable.zip https://github.com/matthme/holochain-binaries/releases/download/libsodium-releases/libsodium-1.0.19-stable.zip
+              curl -L --output ./libsodium/libsodium-1.0.19-stable.zip.minisig https://github.com/matthme/holochain-binaries/releases/download/libsodium-releases/libsodium-1.0.19-stable.zip.minisig
 
               yarn build --target aarch64-unknown-linux-gnu
-              # SODIUM_LIB_DIR="$(pwd)/libsodium" yarn build --zig --target aarch64-unknown-linux-gnu
+              SODIUM_DIST_DIR="$(pwd)/libsodium" yarn build --zig --target aarch64-unknown-linux-gnu
               # yarn build --target aarch64-unknown-linux-gnu --zig-abi-suffix=gnu
 
               echo "printing config.log"
