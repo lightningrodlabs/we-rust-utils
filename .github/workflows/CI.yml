@@ -58,6 +58,17 @@ jobs:
               ls
               echo "exporting path"
               export PATH=$PATH:/build/zig-linux-x86_64-0.13.0
+
+              # echo "installing cross-compilation tools"
+              # sudo apt-get update
+              # sudo apt-get install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+
+              # echo "setting env vars"
+              # export CC_aarch64_unknown_linux_gnu=clang
+              # export CFLAGS_aarch64_unknown_linux_gnu="--target=aarch64-unknown-linux-gnu --sysroot=/usr/aarch64-unknown-linux-gnu/aarch64-unknown-linux-gnu/sysroot"
+
+
+
               # echo "zig version"
               # zig version
               # # Download libsodium
@@ -70,6 +81,10 @@ jobs:
               yarn build --target aarch64-unknown-linux-gnu
               # SODIUM_LIB_DIR="$(pwd)/libsodium" yarn build --zig --target aarch64-unknown-linux-gnu
               # yarn build --target aarch64-unknown-linux-gnu --zig-abi-suffix=gnu
+
+              echo "printing config.log"
+              cat config.log
+
           # - host: ubuntu-latest
           #   target: armv7-unknown-linux-gnueabihf
           #   setup: |
