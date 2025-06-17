@@ -85,8 +85,8 @@ jobs:
               curl -L --output ./libsodium/libsodium-1.0.19-stable.zip.minisig https://github.com/matthme/holochain-binaries/releases/download/libsodium-releases/libsodium-1.0.19-stable.zip.minisig
 
               CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc SODIUM_DIST_DIR="$(pwd)/libsodium" yarn build --target aarch64-unknown-linux-gnu
-              # yarn build --target aarch64-unknown-linux-gnu
-              # SODIUM_DIST_DIR="$(pwd)/libsodium" yarn build --target aarch64-unknown-linux-gnu
+              yarn build --target aarch64-unknown-linux-gnu
+              # # SODIUM_DIST_DIR="$(pwd)/libsodium" yarn build --target aarch64-unknown-linux-gnu
               # yarn build --target aarch64-unknown-linux-gnu --zig-abi-suffix=gnu
 
           # - host: ubuntu-latest
