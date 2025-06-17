@@ -57,7 +57,7 @@ jobs:
               pwd
               ls
               echo "exporting path"
-              export PATH=$PATH:/build/zig-linux-x86_64-0.13.0
+              export PATH=$PATH:$(pwd)/zig-linux-x86_64-0.13.0
 
               # echo "installing cross-compilation tools"
               # sudo apt-get update
@@ -69,8 +69,8 @@ jobs:
 
 
 
-              # echo "zig version"
-              # zig version
+              echo "zig version"
+              zig version
               # # Download libsodium
               mkdir libsodium
               curl -L --output ./libsodium/LATEST.tar.gz https://github.com/matthme/holochain-binaries/releases/download/libsodium-releases/LATEST.tar.gz
