@@ -10,8 +10,7 @@ permissions:
   push:
     branches:
       - main
-    pull_request:
-      - main
+      - feat/aarch64
     tags-ignore:
       - '**'
     paths-ignore:
