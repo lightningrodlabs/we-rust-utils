@@ -10,6 +10,7 @@ permissions:
   push:
     branches:
       - main
+      - feat/aarch64
     pull_request:
       - main
     tags-ignore:
