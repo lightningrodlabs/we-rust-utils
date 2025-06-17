@@ -1,0 +1,25 @@
+{
+  "name": "@lightningrodlabs/we-rust-utils-linux-arm64-gnu",
+  "version": "0.500.0-rc.3",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lightningrodlabs/we-rust-utils"
+  },
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "main": "we-rust-utils.linux-arm64-gnu.node",
+  "files": [
+    "we-rust-utilss.linux-arm64-gnu.node"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">= 10"
+  },
+  "libc": [
+    "glibc"
+  ]
+}
