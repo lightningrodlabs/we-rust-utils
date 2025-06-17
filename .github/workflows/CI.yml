@@ -50,17 +50,14 @@ jobs:
             # docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
             build: |
               uname -a
-              echo "fetching zig tar"
+              # echo "fetching zig tar"
               # curl --output zig-linux-x86_64-0.13.0.tar.xz https://ziglang.org/download/0.13.0/zig-linux-x86_64-0.13.0.tar.xz
-              curl --output zig-linux-aarch64-0.13.0.tar.xz https://ziglang.org/download/0.13.0/zig-linux-aarch64-0.13.0.tar.xz
-              echo "unzipping zig"
+              # echo "unzipping zig"
               # tar xf zig-linux-x86_64-0.13.0.tar.xz
-              tar xf zig-linux-aarch64-0.13.0.tar.xz
-              pwd
-              ls
-              echo "exporting path"
+              # pwd
+              # ls
+              # echo "exporting path"
               # export PATH=$PATH:$(pwd)/zig-linux-x86_64-0.13.0
-              export PATH=$PATH:$(pwd)/zig-linux-aarch64-0.13.0
 
 
               # echo "installing cross-compilation tools"
@@ -73,8 +70,8 @@ jobs:
 
 
 
-              echo "zig version"
-              zig version
+              # echo "zig version"
+              # zig version
               # # Download libsodium
               mkdir libsodium
               curl -L --output ./libsodium/LATEST.tar.gz https://github.com/matthme/holochain-binaries/releases/download/libsodium-releases/LATEST.tar.gz
@@ -82,9 +79,9 @@ jobs:
               curl -L --output ./libsodium/libsodium-1.0.19-stable.zip https://github.com/matthme/holochain-binaries/releases/download/libsodium-releases/libsodium-1.0.19-stable.zip
               curl -L --output ./libsodium/libsodium-1.0.19-stable.zip.minisig https://github.com/matthme/holochain-binaries/releases/download/libsodium-releases/libsodium-1.0.19-stable.zip.minisig
 
+              CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc SODIUM_DIST_DIR="$(pwd)/libsodium" yarn build --target aarch64-unknown-linux-gnu
               # yarn build --target aarch64-unknown-linux-gnu
               # SODIUM_DIST_DIR="$(pwd)/libsodium" yarn build --target aarch64-unknown-linux-gnu
-              SODIUM_DIST_DIR="$(pwd)/libsodium" yarn build --zig --target aarch64-unknown-linux-gnu
               # yarn build --target aarch64-unknown-linux-gnu --zig-abi-suffix=gnu
 
           # - host: ubuntu-latest
