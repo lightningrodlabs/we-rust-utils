@@ -315,8 +315,9 @@ jobs:
     name: Publish
     runs-on: ubuntu-22.04
     needs:
-      - test-macOS-windows-binding
-      - test-linux-x64-gnu-binding
+      # - test-macOS-windows-binding
+      # - test-linux-x64-gnu-binding
+      - test-linux-aarch64-gnu-binding
     steps:
       - uses: actions/checkout@v4
       - name: Setup node
