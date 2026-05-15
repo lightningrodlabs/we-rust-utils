@@ -1,6 +1,6 @@
 {
   "name": "@lightningrodlabs/we-rust-utils",
-  "version": "0.601.0",
+  "version": "0.601.1",
   "description": "Native Node.js bindings for Rust utilities used by Moss: signing Holochain zome calls and inspecting/repackaging happ and webhapp bundles.",
   "repository": {
     "type": "git",
@@ -48,12 +48,5 @@
     "test": "ava",
     "universal": "napi universal",
     "version": "napi version"
-  },
-  "optionalDependencies": {
-    "@lightningrodlabs/we-rust-utils-darwin-arm64": "0.601.0",
-    "@lightningrodlabs/we-rust-utils-darwin-x64": "0.601.0",
-    "@lightningrodlabs/we-rust-utils-linux-arm64-gnu": "0.601.0",
-    "@lightningrodlabs/we-rust-utils-linux-x64-gnu": "0.601.0",
-    "@lightningrodlabs/we-rust-utils-win32-x64-msvc": "0.601.0"
   }
 }
