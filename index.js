@@ -80,8 +80,8 @@ function requireNative() {
       try {
         const binding = require('@lightningrodlabs/we-rust-utils-android-arm64')
         const bindingPackageVersion = require('@lightningrodlabs/we-rust-utils-android-arm64/package.json').version
-        if (bindingPackageVersion !== '0.601.1' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
-          throw new Error(`Native binding package version mismatch, expected 0.601.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
+        if (bindingPackageVersion !== '0.601.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
+          throw new Error(`Native binding package version mismatch, expected 0.601.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
         return binding
       } catch (e) {
@@ -96,8 +96,8 @@ function requireNative() {
       try {
         const binding = require('@lightningrodlabs/we-rust-utils-android-arm-eabi')
         const bindingPackageVersion = require('@lightningrodlabs/we-rust-utils-android-arm-eabi/package.json').version
-        if (bindingPackageVersion !== '0.601.1' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
-          throw new Error(`Native binding package version mismatch, expected 0.601.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
+        if (bindingPackageVersion !== '0.601.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
+          throw new Error(`Native binding package version mismatch, expected 0.601.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
         return binding
       } catch (e) {
@@ -116,8 +116,8 @@ function requireNative() {
       try {
         const binding = require('@lightningrodlabs/we-rust-utils-win32-x64-msvc')
         const bindingPackageVersion = require('@lightningrodlabs/we-rust-utils-win32-x64-msvc/package.json').version
-        if (bindingPackageVersion !== '0.601.1' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
-          throw new Error(`Native binding package version mismatch, expected 0.601.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
+        if (bindingPackageVersion !== '0.601.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
+          throw new Error(`Native binding package version mismatch, expected 0.601.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
         return binding
       } catch (e) {
@@ -132,8 +132,8 @@ function requireNative() {
       try {
         const binding = require('@lightningrodlabs/we-rust-utils-win32-ia32-msvc')
         const bindingPackageVersion = require('@lightningrodlabs/we-rust-utils-win32-ia32-msvc/package.json').version
-        if (bindingPackageVersion !== '0.601.1' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
-          throw new Error(`Native binding package version mismatch, expected 0.601.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
+        if (bindingPackageVersion !== '0.601.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
+          throw new Error(`Native binding package version mismatch, expected 0.601.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
         return binding
       } catch (e) {
@@ -148,8 +148,8 @@ function requireNative() {
       try {
         const binding = require('@lightningrodlabs/we-rust-utils-win32-arm64-msvc')
         const bindingPackageVersion = require('@lightningrodlabs/we-rust-utils-win32-arm64-msvc/package.json').version
-        if (bindingPackageVersion !== '0.601.1' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
-          throw new Error(`Native binding package version mismatch, expected 0.601.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
+        if (bindingPackageVersion !== '0.601.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
+          throw new Error(`Native binding package version mismatch, expected 0.601.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
         return binding
       } catch (e) {
@@ -167,8 +167,8 @@ function requireNative() {
     try {
       const binding = require('@lightningrodlabs/we-rust-utils-darwin-universal')
       const bindingPackageVersion = require('@lightningrodlabs/we-rust-utils-darwin-universal/package.json').version
-      if (bindingPackageVersion !== '0.601.1' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
-        throw new Error(`Native binding package version mismatch, expected 0.601.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
+      if (bindingPackageVersion !== '0.601.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
+        throw new Error(`Native binding package version mismatch, expected 0.601.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
       }
       return binding
     } catch (e) {
@@ -183,8 +183,8 @@ function requireNative() {
       try {
         const binding = require('@lightningrodlabs/we-rust-utils-darwin-x64')
         const bindingPackageVersion = require('@lightningrodlabs/we-rust-utils-darwin-x64/package.json').version
-        if (bindingPackageVersion !== '0.601.1' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
-          throw new Error(`Native binding package version mismatch, expected 0.601.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
+        if (bindingPackageVersion !== '0.601.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
+          throw new Error(`Native binding package version mismatch, expected 0.601.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
         return binding
       } catch (e) {
@@ -199,8 +199,8 @@ function requireNative() {
       try {
         const binding = require('@lightningrodlabs/we-rust-utils-darwin-arm64')
         const bindingPackageVersion = require('@lightningrodlabs/we-rust-utils-darwin-arm64/package.json').version
-        if (bindingPackageVersion !== '0.601.1' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
-          throw new Error(`Native binding package version mismatch, expected 0.601.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
+        if (bindingPackageVersion !== '0.601.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
+          throw new Error(`Native binding package version mismatch, expected 0.601.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
         return binding
       } catch (e) {
@@ -219,8 +219,8 @@ function requireNative() {
       try {
         const binding = require('@lightningrodlabs/we-rust-utils-freebsd-x64')
         const bindingPackageVersion = require('@lightningrodlabs/we-rust-utils-freebsd-x64/package.json').version
-        if (bindingPackageVersion !== '0.601.1' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
-          throw new Error(`Native binding package version mismatch, expected 0.601.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
+        if (bindingPackageVersion !== '0.601.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
+          throw new Error(`Native binding package version mismatch, expected 0.601.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
         return binding
       } catch (e) {
@@ -235,8 +235,8 @@ function requireNative() {
       try {
         const binding = require('@lightningrodlabs/we-rust-utils-freebsd-arm64')
         const bindingPackageVersion = require('@lightningrodlabs/we-rust-utils-freebsd-arm64/package.json').version
-        if (bindingPackageVersion !== '0.601.1' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
-          throw new Error(`Native binding package version mismatch, expected 0.601.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
+        if (bindingPackageVersion !== '0.601.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
+          throw new Error(`Native binding package version mismatch, expected 0.601.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
         return binding
       } catch (e) {
@@ -256,8 +256,8 @@ function requireNative() {
         try {
           const binding = require('@lightningrodlabs/we-rust-utils-linux-x64-musl')
           const bindingPackageVersion = require('@lightningrodlabs/we-rust-utils-linux-x64-musl/package.json').version
-          if (bindingPackageVersion !== '0.601.1' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
-            throw new Error(`Native binding package version mismatch, expected 0.601.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
+          if (bindingPackageVersion !== '0.601.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
+            throw new Error(`Native binding package version mismatch, expected 0.601.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
           }
           return binding
         } catch (e) {
@@ -272,8 +272,8 @@ function requireNative() {
         try {
           const binding = require('@lightningrodlabs/we-rust-utils-linux-x64-gnu')
           const bindingPackageVersion = require('@lightningrodlabs/we-rust-utils-linux-x64-gnu/package.json').version
-          if (bindingPackageVersion !== '0.601.1' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
-            throw new Error(`Native binding package version mismatch, expected 0.601.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
+          if (bindingPackageVersion !== '0.601.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
+            throw new Error(`Native binding package version mismatch, expected 0.601.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
           }
           return binding
         } catch (e) {
@@ -290,8 +290,8 @@ function requireNative() {
         try {
           const binding = require('@lightningrodlabs/we-rust-utils-linux-arm64-musl')
           const bindingPackageVersion = require('@lightningrodlabs/we-rust-utils-linux-arm64-musl/package.json').version
-          if (bindingPackageVersion !== '0.601.1' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
-            throw new Error(`Native binding package version mismatch, expected 0.601.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
+          if (bindingPackageVersion !== '0.601.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
+            throw new Error(`Native binding package version mismatch, expected 0.601.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
           }
           return binding
         } catch (e) {
@@ -306,8 +306,8 @@ function requireNative() {
         try {
           const binding = require('@lightningrodlabs/we-rust-utils-linux-arm64-gnu')
           const bindingPackageVersion = require('@lightningrodlabs/we-rust-utils-linux-arm64-gnu/package.json').version
-          if (bindingPackageVersion !== '0.601.1' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
-            throw new Error(`Native binding package version mismatch, expected 0.601.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
+          if (bindingPackageVersion !== '0.601.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
+            throw new Error(`Native binding package version mismatch, expected 0.601.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
           }
           return binding
         } catch (e) {
@@ -324,8 +324,8 @@ function requireNative() {
         try {
           const binding = require('@lightningrodlabs/we-rust-utils-linux-arm-musleabihf')
           const bindingPackageVersion = require('@lightningrodlabs/we-rust-utils-linux-arm-musleabihf/package.json').version
-          if (bindingPackageVersion !== '0.601.1' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
-            throw new Error(`Native binding package version mismatch, expected 0.601.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
+          if (bindingPackageVersion !== '0.601.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
+            throw new Error(`Native binding package version mismatch, expected 0.601.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
           }
           return binding
         } catch (e) {
@@ -340,8 +340,8 @@ function requireNative() {
         try {
           const binding = require('@lightningrodlabs/we-rust-utils-linux-arm-gnueabihf')
           const bindingPackageVersion = require('@lightningrodlabs/we-rust-utils-linux-arm-gnueabihf/package.json').version
-          if (bindingPackageVersion !== '0.601.1' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
-            throw new Error(`Native binding package version mismatch, expected 0.601.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
+          if (bindingPackageVersion !== '0.601.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
+            throw new Error(`Native binding package version mismatch, expected 0.601.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
           }
           return binding
         } catch (e) {
@@ -358,8 +358,8 @@ function requireNative() {
         try {
           const binding = require('@lightningrodlabs/we-rust-utils-linux-riscv64-musl')
           const bindingPackageVersion = require('@lightningrodlabs/we-rust-utils-linux-riscv64-musl/package.json').version
-          if (bindingPackageVersion !== '0.601.1' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
-            throw new Error(`Native binding package version mismatch, expected 0.601.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
+          if (bindingPackageVersion !== '0.601.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
+            throw new Error(`Native binding package version mismatch, expected 0.601.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
           }
           return binding
         } catch (e) {
@@ -374,8 +374,8 @@ function requireNative() {
         try {
           const binding = require('@lightningrodlabs/we-rust-utils-linux-riscv64-gnu')
           const bindingPackageVersion = require('@lightningrodlabs/we-rust-utils-linux-riscv64-gnu/package.json').version
-          if (bindingPackageVersion !== '0.601.1' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
-            throw new Error(`Native binding package version mismatch, expected 0.601.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
+          if (bindingPackageVersion !== '0.601.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
+            throw new Error(`Native binding package version mismatch, expected 0.601.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
           }
           return binding
         } catch (e) {
@@ -391,8 +391,8 @@ function requireNative() {
       try {
         const binding = require('@lightningrodlabs/we-rust-utils-linux-ppc64-gnu')
         const bindingPackageVersion = require('@lightningrodlabs/we-rust-utils-linux-ppc64-gnu/package.json').version
-        if (bindingPackageVersion !== '0.601.1' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
-          throw new Error(`Native binding package version mismatch, expected 0.601.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
+        if (bindingPackageVersion !== '0.601.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
+          throw new Error(`Native binding package version mismatch, expected 0.601.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
         return binding
       } catch (e) {
@@ -407,8 +407,8 @@ function requireNative() {
       try {
         const binding = require('@lightningrodlabs/we-rust-utils-linux-s390x-gnu')
         const bindingPackageVersion = require('@lightningrodlabs/we-rust-utils-linux-s390x-gnu/package.json').version
-        if (bindingPackageVersion !== '0.601.1' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
-          throw new Error(`Native binding package version mismatch, expected 0.601.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
+        if (bindingPackageVersion !== '0.601.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
+          throw new Error(`Native binding package version mismatch, expected 0.601.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
         return binding
       } catch (e) {
@@ -427,8 +427,8 @@ function requireNative() {
       try {
         const binding = require('@lightningrodlabs/we-rust-utils-openharmony-arm64')
         const bindingPackageVersion = require('@lightningrodlabs/we-rust-utils-openharmony-arm64/package.json').version
-        if (bindingPackageVersion !== '0.601.1' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
-          throw new Error(`Native binding package version mismatch, expected 0.601.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
+        if (bindingPackageVersion !== '0.601.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
+          throw new Error(`Native binding package version mismatch, expected 0.601.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
         return binding
       } catch (e) {
@@ -443,8 +443,8 @@ function requireNative() {
       try {
         const binding = require('@lightningrodlabs/we-rust-utils-openharmony-x64')
         const bindingPackageVersion = require('@lightningrodlabs/we-rust-utils-openharmony-x64/package.json').version
-        if (bindingPackageVersion !== '0.601.1' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
-          throw new Error(`Native binding package version mismatch, expected 0.601.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
+        if (bindingPackageVersion !== '0.601.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
+          throw new Error(`Native binding package version mismatch, expected 0.601.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
         return binding
       } catch (e) {
@@ -459,8 +459,8 @@ function requireNative() {
       try {
         const binding = require('@lightningrodlabs/we-rust-utils-openharmony-arm')
         const bindingPackageVersion = require('@lightningrodlabs/we-rust-utils-openharmony-arm/package.json').version
-        if (bindingPackageVersion !== '0.601.1' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
-          throw new Error(`Native binding package version mismatch, expected 0.601.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
+        if (bindingPackageVersion !== '0.601.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
+          throw new Error(`Native binding package version mismatch, expected 0.601.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
         return binding
       } catch (e) {
@@ -510,5 +510,7 @@ if (!nativeBinding) {
 module.exports = nativeBinding
 module.exports.WeRustHandler = nativeBinding.WeRustHandler
 module.exports.happBytesWithCustomProperties = nativeBinding.happBytesWithCustomProperties
+module.exports.legacyHappSha256FromBytes = nativeBinding.legacyHappSha256FromBytes
+module.exports.legacyHappSha256FromPath = nativeBinding.legacyHappSha256FromPath
 module.exports.saveHappOrWebhapp = nativeBinding.saveHappOrWebhapp
 module.exports.validateHappOrWebhapp = nativeBinding.validateHappOrWebhapp

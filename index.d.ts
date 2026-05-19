@@ -15,6 +15,18 @@ export interface HappAndUiHashes {
 
 export declare function happBytesWithCustomProperties(happPath: string, properties: Record<string, string | undefined | null>): Promise<Array<number>>
 
+/** Compute the legacy happ sha256 from in-memory bytes. */
+export declare function legacyHappSha256FromBytes(bytes: Array<number>): Promise<string>
+
+/**
+ * Compute the legacy happ sha256 for a `.happ` or `.webhapp` file.
+ *
+ * For a webhapp, the inner happ resource is extracted (without unpacking it
+ * under the current schema) and the legacy hash is computed over those bytes.
+ * For a standalone happ the bytes are used as-is.
+ */
+export declare function legacyHappSha256FromPath(happOrWebhappPath: string): Promise<string>
+
 /**
  * Saves a happ or a webhapp file. If a uis_dir is specified and it is a webhapp,
  * then the UI will be stored in [uis_dir]/[sha 256 of UI]/assets. If no uis_dir

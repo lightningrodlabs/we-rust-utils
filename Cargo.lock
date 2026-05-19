@@ -1616,8 +1616,9 @@ dependencies = [
 
 [[package]]
 name = "lightningrodlabs_we-rust-utils"
-version = "0.601.1"
+version = "0.601.2"
 dependencies = [
+ "flate2",
  "futures",
  "hex",
  "holochain_types",
@@ -1626,7 +1627,10 @@ dependencies = [
  "napi",
  "napi-build",
  "napi-derive",
+ "rmp-serde",
+ "rmpv",
  "serde",
+ "serde_bytes",
  "serde_json",
  "serde_yaml 0.8.26",
  "sha2",

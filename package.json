@@ -1,6 +1,6 @@
 {
   "name": "@lightningrodlabs/we-rust-utils",
-  "version": "0.601.1",
+  "version": "0.601.2",
   "description": "Native Node.js bindings for Rust utilities used by Moss: signing Holochain zome calls and inspecting/repackaging happ and webhapp bundles.",
   "repository": {
     "type": "git",
