@@ -1693,6 +1693,7 @@ checksum = "2e126dda6f34391ab7b444f9922055facc83c07a910da3eb16f1e4d9c45dc777"
 name = "lightningrodlabs_we-rust-utils"
 version = "0.700.0-dev.0"
 dependencies = [
+ "flate2",
  "futures",
  "hex",
  "holochain_types",
@@ -1701,7 +1702,10 @@ dependencies = [
  "napi",
  "napi-build",
  "napi-derive",
+ "rmp-serde",
+ "rmpv",
  "serde",
+ "serde_bytes",
  "serde_json",
  "serde_yaml",
  "sha2",
