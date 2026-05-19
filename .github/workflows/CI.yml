@@ -20,6 +20,7 @@ permissions:
       - .editorconfig
       - docs/**
   pull_request: null
+  workflow_dispatch: null
 jobs:
   build:
     strategy:
