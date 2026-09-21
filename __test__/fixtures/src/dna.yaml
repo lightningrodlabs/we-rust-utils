@@ -1,0 +1,20 @@
+manifest_version: '0'
+name: fixture
+integrity:
+  network_seed: fixture-seed
+  properties:
+    progenitor: ~
+    nested:
+      list: [1, 2, 3]
+  zomes:
+    - name: fixture_integrity
+      hash: ~
+      path: integrity.wasm
+      dependencies: ~
+coordinator:
+  zomes:
+    - name: fixture
+      hash: ~
+      path: coordinator.wasm
+      dependencies:
+        - name: fixture_integrity
