@@ -63,6 +63,23 @@ npm run build
 npm test
 ```
 
+## Releasing
+
+Releases are published to npm by CI when a `v<version>` tag is pushed. The tag
+must match the `version` in `package.json`. Versions with a prerelease suffix
+(e.g. `0.700.1-dev.0`) are published under the `next` dist-tag; others under
+`latest`.
+
+```sh
+# package.json, and the per-platform npm/*/package.json via the `version` script
+npm version 0.700.0 --no-git-tag-version
+# set the same version in Cargo.toml, then rebuild so index.js expects it
+npm run build
+git commit -am "0.700.0"
+git tag v0.700.0
+git push origin HEAD v0.700.0
+```
+
 ## License
 
 [Apache-2.0](LICENSE) © Lightning Rod Labs
