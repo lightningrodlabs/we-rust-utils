@@ -16,7 +16,7 @@ napi = { version = "3.2.2", default-features = false, features = [
 ] }
 napi-derive = "3.2.2"
 
-holochain_types = "=0.7.0-dev.24"
+holochain_types = "=0.7.0"
 lair_keystore_api = "=0.7.1"
 
 futures = "0.3"
