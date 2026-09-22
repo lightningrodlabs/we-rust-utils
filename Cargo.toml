@@ -8,13 +8,13 @@ crate-type = ["cdylib"]
 
 [dependencies]
 # Default enable napi4 feature, see https://nodejs.org/api/n-api.html#node-api-version-matrix
-napi = { version = "3.2.2", default-features = false, features = [
+napi = { version = "3.12.7", default-features = false, features = [
   "napi4",
   "tokio_rt",
   "async",
   "serde-json",
 ] }
-napi-derive = "3.2.2"
+napi-derive = "3.6.8"
 
 holochain_types = "=0.7.0"
 lair_keystore_api = "=0.7.1"
